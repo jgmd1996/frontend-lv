@@ -19,9 +19,6 @@ import CreateOrder from './pages/Order/ CreateOrder';
 import UpdateOrder from './pages/Order/UpdateOrder';
 
 
-
-
-
 const Rotas =() => {
   return (
     <div className='routes'>

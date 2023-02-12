@@ -34,16 +34,16 @@ function UpdateProduct() {
 
   const RegisterSchema = Yup.object().shape({
     price: Yup.number()
-      .min(2, 'Muito curto!')
-      .max(200, 'Muito grande!')
+      .min(1, 'Muito curto!')
+      .max(1000, 'Muito grande!')
       .required('Preço obrigatório!'),
-    description: Yup.string()
+      description: Yup.string()
       .min(2, 'Muito curto!')
       .max(200, 'Muito grande!')
       .required('Descrição obrigatório!'),
-    amount: Yup.number()
-      .min(2, 'Muito curto!')
-      .max(200, 'Muito grande!')
+      amount: Yup.number()
+      .min(1, 'Muito curto!')
+      .max(1000, 'Muito grande!')
       .required('Quantidade obrigatório!'),
       suppliers: Yup.array()
       .nullable(true)

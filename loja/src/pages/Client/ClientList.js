@@ -1,8 +1,8 @@
 import React from 'react';
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom';
+import ButtonRedirect from '../../components/ButtonRedirect';
 import CustomComponente2 from '../../components/CustomComponente2';
-import RedirectPages from '../../components/RedirectPages';
 import "./style.css";
 
 function ClientList() {
@@ -71,7 +71,8 @@ function ClientList() {
                     })}
                 </tbody>
             </table>
-            <RedirectPages linkPage="/" page="Voltar para Home"/>
+            <ButtonRedirect page="" nameButton="Voltar para home"/>
+            <ButtonRedirect page="CreateClient" nameButton="Cadastrar novo cliente"/>
         </div>
 
 

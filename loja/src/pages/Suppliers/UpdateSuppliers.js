@@ -8,69 +8,69 @@ function UpdateSuppliers() {
 
   const RegisterSchema = Yup.object().shape({
     socialDenomination: Yup.string()
-      .min(2, 'Muito curto!')
-      .max(200, 'Muito grande!')
-      .required('Denominação social obrigatório!'),
+    .min(2, 'Muito curto!')
+    .max(200, 'Muito grande!')
+    .required('Denominação social obrigatório!'),
 
-      address: Yup.string()
-      .min(2, 'Muito curto!')
-      .max(200, 'Muito grande!')
-      .required('Endereço da empresa obrigatório!'),
+    address: Yup.string()
+    .min(2, 'Muito curto!')
+    .max(200, 'Muito grande!')
+    .required('Endereço da empresa obrigatório!'),
 
-      neighborhood: Yup.string()
-      .min(2, 'Muito curto!')
-      .max(200, 'Muito grande!')
-      .required('Bairro da empresa obrigatório!'),
+    neighborhood: Yup.string()
+    .min(2, 'Muito curto!')
+    .max(200, 'Muito grande!')
+    .required('Bairro da empresa obrigatório!'),
 
-      city: Yup.string()
-      .min(2, 'Muito curto!')
-      .max(200, 'Muito grande!')
-      .required('Cidade obrigatório!'),
+    city: Yup.string()
+    .min(2, 'Muito curto!')
+    .max(200, 'Muito grande!')
+    .required('Cidade obrigatório!'),
 
-      uf: Yup.string()
-      .min(2, 'Muito curto!')
-      .max(200, 'Muito grande!')
-      .required('UF obrigatório!'),
+    uf: Yup.string()
+    .min(2, 'Muito curto!')
+    .max(2, 'Muito grande!')
+    .required('UF obrigatório!'),
 
-      telephone: Yup.number()
-      .min(2, 'Muito curto!')
-      .max(200, 'Muito grande!')
-      .required('Telefone da empresa obrigatório!'),
+    telephone: Yup.number()
+    .min(10000000000, 'Muito curto!')
+    .max(99999999999, 'Muito grande!')
+    .required('Telefone da empresa obrigatório!'),
 
-      zipCode: Yup.number()
-      .min(2, 'Muito curto!')
-      .max(200, 'Muito grande!')
-      .required('CEP obrigatório!'),
+    zipCode: Yup.number()
+    .min(10000000, 'Muito curto!')
+    .max(99999999, 'Muito grande!')
+    .required('CEP obrigatório!'),
 
-      email: Yup.string()
-      .min(2, 'Muito curto!')
-      .max(200, 'Muito grande!')
-      .required('E-mail obrigatório!'),
+    email: Yup.string()
+    .min(2, 'Muito curto!')
+    .max(200, 'Muito grande!')
+    .required('E-mail obrigatório!'),
 
-      cnpj: Yup.string()
-      .min(2, 'Muito curto!')
-      .max(200, 'Muito grande!')
-      .required('CNPJ obrigatório!'),
+    cnpj: Yup.number()
+    .min(10000000000000, 'Muito curto!')
+    .max(99999999999999, 'Muito grande!')
+    .required('CNPJ obrigatório!'),
 
-      lineOfBusinesscontact: Yup.string()
-      .min(2, 'Muito curto!')
-      .max(200, 'Muito grande!')
-      .required('Linha de negócios obrigatório!'),
+    lineOfBusinesscontact: Yup.string()
+    .min(2, 'Muito curto!')
+    .max(200, 'Muito grande!')
+    .required('Linha de negócios obrigatório!'),
 
-      functions: Yup.string()
-      .min(2, 'Muito curto!')
-      .max(200, 'Muito grande!')
-      .required('Função obrigatório!'),
+    functions: Yup.string()
+    .min(2, 'Muito curto!')
+    .max(200, 'Muito grande!')
+    .required('Função obrigatório!'),
 
-      ProductName: Yup.string()
-      .min(2, 'Muito curto!')
-      .max(200, 'Muito grande!')
-      .required('Name do produto obrigatório!'),
+    ProductName: Yup.string()
+    .min(2, 'Muito curto!')
+    .max(200, 'Muito grande!')
+    .required('Name do produto obrigatório!'),
 
-      price: Yup.string()
-      .min(2, 'Muito curto!')
-      .max(200, 'Muito grande!')
-      .required('Preço do produto obrigatório!'),
+    price: Yup.number()
+    .min(1, 'Muito curto!')
+    .max(1000, 'Muito grande!')
+    .required('Preço do produto obrigatório!'),
   });
 
   const formik = useFormik({
@@ -103,7 +103,7 @@ function UpdateSuppliers() {
         telephone: values.telephone+ "",
         zipCode: values.zipCode+ "",
         email: values.email,
-        cnpj: values.cnpj,
+        cnpj: values.cnpj+ "",
         lineOfBusinesscontact: values.lineOfBusinesscontact,
         functions: values.functions,
         ProductName: values.ProductName,
@@ -223,7 +223,7 @@ function UpdateSuppliers() {
 
           <div>
             <input
-              type="text"
+              type="number"
               id="cnpj"
               placeholder="Digite o CNPJ da empresa"
               {...getFieldProps('cnpj')}

@@ -2,14 +2,10 @@ import { useNavigate } from 'react-router-dom';
 import { Form, FormikProvider, useFormik } from 'formik';
 import * as Yup from "yup";
 import React from 'react';
-import { useEffect, useState } from 'react'
-import Select from "react-select";
-import makeAnimated from "react-select/animated";
-import RedirectPages from '../../components/RedirectPages';
 import "./style.css";
+import ButtonRedirect from '../../components/ButtonRedirect';
 
 function CreateClient() {
-  const animatedComponents = makeAnimated();
   const navigate = useNavigate();
 
   const RegisterSchema = Yup.object().shape({
@@ -25,7 +21,7 @@ function CreateClient() {
       .required('E-mail obrigatório !'),
 
       telephone: Yup.number()
-      .min(10, 'Muito curto!')
+      .min(10000000000, 'Muito curto!')
       .max(99999999999, 'Muito grande!')
       .required('Contato obrigatório!'),
 
@@ -35,17 +31,17 @@ function CreateClient() {
       .required('Endereço obrigatório!'),
 
       dateOfBirth: Yup.number()
-      .min(2, 'Muito curto!')
-      .max(2999, 'Muito grande!')
+      .min(10000000, 'Muito curto!')
+      .max(99999999, 'Muito grande!')
       .required('Data de nascimento obrigatório!'),
 
       sex: Yup.string()
       .min(2, 'Muito curto!')
-      .max(200, 'Muito grande!')
+      .max(50, 'Muito grande!')
       .required('Sexo obrigatório!'),
 
       cpf: Yup.number()
-      .min(11, 'Muito curto!')
+      .min(10000000000, 'Muito curto!')
       .max(99999999999, 'Muito grande!')
       .required('CPF obrigadorio')
   });
@@ -69,7 +65,7 @@ function CreateClient() {
         email: values.email,
         telephone: values.telephone,
         address: values.address,
-        dateOfBirth: values.dateOfBirth,
+        dateOfBirth: values.dateOfBirth+"",
         sex: values.sex,
         cpf: values.cpf
       };
@@ -149,7 +145,7 @@ function CreateClient() {
 
           <div>
             <input
-              type="text"
+              type="number"
               id="dateOfBirth"
               placeholder="Digite o data de nascimento"
               {...getFieldProps('dateOfBirth')}
@@ -179,7 +175,7 @@ function CreateClient() {
 
           <div>{touched.category && errors.category}</div>
           <button type='submit'  >Cadastrar novo cliente</button>
-          <RedirectPages linkPage="/" page="Voltar para Home"/>
+          <ButtonRedirect page="ClientList" nameButton="Voltar"/>
         </Form>
       </FormikProvider>
     </>

@@ -12,15 +12,15 @@ function UpdateClient() {
     name: Yup.string()
     .min(2, 'Muito curto!')
     .max(200, 'Muito grande!')
-    .required('name obrigatório!'),
+    .required('Nome obrigatório!'),
 
     email: Yup.string()
     .min(1, 'Muito curto!')
     .max(500, 'Muito grande!')
-    .required('Email obrigatório !'),
+    .required('E-mail obrigatório !'),
 
     telephone: Yup.number()
-    .min(10, 'Muito curto!')
+    .min(10000000000, 'Muito curto!')
     .max(99999999999, 'Muito grande!')
     .required('Contato obrigatório!'),
 
@@ -30,17 +30,17 @@ function UpdateClient() {
     .required('Endereço obrigatório!'),
 
     dateOfBirth: Yup.number()
-    .min(2, 'Muito curto!')
-    .max(2999, 'Muito grande!')
+    .min(10000000, 'Muito curto!')
+    .max(99999999, 'Muito grande!')
     .required('Data de nascimento obrigatório!'),
 
     sex: Yup.string()
     .min(2, 'Muito curto!')
-    .max(200, 'Muito grande!')
+    .max(50, 'Muito grande!')
     .required('Sexo obrigatório!'),
 
     cpf: Yup.number()
-    .min(11, 'Muito curto!')
+    .min(10000000000, 'Muito curto!')
     .max(99999999999, 'Muito grande!')
     .required('CPF obrigadorio')
   });

@@ -1,9 +1,8 @@
 import React from 'react';
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom';
+import ButtonRedirect from '../../components/ButtonRedirect';
 import CustomComponente2 from '../../components/CustomComponente2';
-import RedirectPages from '../../components/RedirectPages';
-
 
 function OrderList() {
 
@@ -65,7 +64,8 @@ function OrderList() {
                     })}
                 </tbody>
             </table>
-            <RedirectPages linkPage="/" page="Voltar para Home"/>
+            <ButtonRedirect page="" nameButton="Voltar para home"/>
+            <ButtonRedirect page="CreateSuppliers" nameButton="Cadastrar novo pedido"/>  
         </div>
 
 

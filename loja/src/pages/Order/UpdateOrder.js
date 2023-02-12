@@ -57,12 +57,12 @@ useEffect(() => {
 
   const RegisterSchema = Yup.object().shape({
     description: Yup.string()
-      .min(2, 'Muito curto!')
+      .min(2, 'Descrição muito curto!')
       .max(200, 'Muito grande!')
       .required('Descrição obrigatório!'),
       amount: Yup.number()
-      .min(2, 'Muito curto!')
-      .max(200, 'Muito grande!')
+      .min(1, 'Quantidade muito curto!')
+      .max(1000, 'Valor maximo 1000!')
       .required('Quantidade obrigatório!'),
       products: Yup.array()
       .nullable(true)

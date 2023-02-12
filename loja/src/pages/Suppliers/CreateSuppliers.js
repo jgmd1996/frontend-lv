@@ -2,8 +2,8 @@ import { useNavigate } from 'react-router-dom';
 import { Form, FormikProvider, useFormik } from 'formik';
 import * as Yup from "yup";
 import React from 'react';
-import RedirectPages from '../../components/RedirectPages';
 import "./style.css";
+import ButtonRedirect from '../../components/ButtonRedirect';
 
 function CreateSuppliers() {
   const navigate = useNavigate();
@@ -31,17 +31,17 @@ function CreateSuppliers() {
 
       uf: Yup.string()
       .min(2, 'Muito curto!')
-      .max(200, 'Muito grande!')
+      .max(2, 'Muito grande!')
       .required('UF obrigatório!'),
 
       telephone: Yup.number()
-      .min(2, 'Muito curto!')
-      .max(200, 'Muito grande!')
+      .min(10000000000, 'Muito curto!')
+      .max(99999999999, 'Muito grande!')
       .required('Telefone da empresa obrigatório!'),
 
       zipCode: Yup.number()
-      .min(2, 'Muito curto!')
-      .max(200, 'Muito grande!')
+      .min(10000000, 'Muito curto!')
+      .max(99999999, 'Muito grande!')
       .required('CEP obrigatório!'),
 
       email: Yup.string()
@@ -49,9 +49,9 @@ function CreateSuppliers() {
       .max(200, 'Muito grande!')
       .required('E-mail obrigatório!'),
 
-      cnpj: Yup.string()
-      .min(2, 'Muito curto!')
-      .max(200, 'Muito grande!')
+      cnpj: Yup.number()
+      .min(10000000000000, 'Muito curto!')
+      .max(99999999999999, 'Muito grande!')
       .required('CNPJ obrigatório!'),
 
       lineOfBusinesscontact: Yup.string()
@@ -69,9 +69,9 @@ function CreateSuppliers() {
       .max(200, 'Muito grande!')
       .required('Name do produto obrigatório!'),
 
-      price: Yup.string()
-      .min(2, 'Muito curto!')
-      .max(200, 'Muito grande!')
+      price: Yup.number()
+      .min(1, 'Muito curto!')
+      .max(1000, 'Muito grande!')
       .required('Preço do produto obrigatório!'),
   });
 
@@ -105,7 +105,7 @@ function CreateSuppliers() {
         telephone: values.telephone+"",
         zipCode: values.zipCode + "",
         email: values.email,
-        cnpj: values.cnpj ,
+        cnpj: values.cnpj + "",
         lineOfBusinesscontact: values.lineOfBusinesscontact,
         functions: values.functions,
         ProductName: values.ProductName,
@@ -230,7 +230,7 @@ function CreateSuppliers() {
 
           <div>
             <input
-              type="text"
+              type="number"
               id="cnpj"
               placeholder="Digite o CNPJ da empresa"
               {...getFieldProps('cnpj')}
@@ -282,7 +282,7 @@ function CreateSuppliers() {
 
           <div>{touched.category && errors.category}</div>
           <button type='submit'>Criar produtos</button>
-          <RedirectPages linkPage="/" page="Voltar para Home" />
+          <ButtonRedirect page="SuppliersList" nameButton="Voltar"/>
         </Form>
       </FormikProvider>
     </>

@@ -1,7 +1,7 @@
 import React from 'react';
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom';
-import RedirectPages from '../../components/RedirectPages';
+import ButtonRedirect from '../../components/ButtonRedirect';
 
 function ProductList() {
     
@@ -66,7 +66,8 @@ function ProductList() {
                     }
                 </tbody>
             </table>
-            <RedirectPages linkPage="/" page="Voltar para Home"/>
+            <ButtonRedirect page="" nameButton="Voltar para home"/>
+            <ButtonRedirect page="createProduct" nameButton="Cadastrar novo produto"/>
         </div>
     );
 }

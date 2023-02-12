@@ -1,10 +1,10 @@
 import { useNavigate } from 'react-router-dom';
 import { Form, FormikProvider, useFormik } from 'formik';
-import RedirectPages from '../../components/RedirectPages';
 import { useEffect, useState } from 'react'
 import Select from "react-select";
 import makeAnimated from "react-select/animated";
 import * as Yup from "yup";
+import ButtonRedirect from '../../components/ButtonRedirect';
 
 function  CreateProduct() {
 
@@ -31,16 +31,16 @@ function  CreateProduct() {
 
   const RegisterSchema = Yup.object().shape({
       price: Yup.number()
-      .min(2, 'Muito curto!')
-      .max(200, 'Muito grande!')
+      .min(1, 'Muito curto!')
+      .max(1000, 'Muito grande!')
       .required('Preço obrigatório!'),
       description: Yup.string()
       .min(2, 'Muito curto!')
       .max(200, 'Muito grande!')
       .required('Descrição obrigatório!'),
       amount: Yup.number()
-      .min(2, 'Muito curto!')
-      .max(200, 'Muito grande!')
+      .min(1, 'Muito curto!')
+      .max(1000, 'Muito grande!')
       .required('Quantidade obrigatório!'),
       supplier: Yup.array()
       .nullable(true)
@@ -145,7 +145,7 @@ function  CreateProduct() {
 
           <button type='submit'>Criar novo produto</button>
           
-          <RedirectPages linkPage="/" page="Voltar para Home"/>
+          <ButtonRedirect page="ProductList" nameButton="Voltar"/>
         </Form>
       </FormikProvider>
     </>

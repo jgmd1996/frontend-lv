@@ -1,7 +1,7 @@
 import React from 'react';
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom';
-import RedirectPages from '../../components/RedirectPages';
+import ButtonRedirect from '../../components/ButtonRedirect';
 import "./style.css";
 
 function SuppliersList() {
@@ -58,7 +58,6 @@ function SuppliersList() {
                         <td>Atualizar</td>
                         <td>Deletar</td>
                         
-                        
                     </tr>
                     {itens.map(item => {
 
@@ -75,8 +74,7 @@ function SuppliersList() {
                             <td style={{ border: "1px solid" }}>{item.lineOfBusinesscontact}</td>
                             <td style={{ border: "1px solid" }}>{item.functions}</td>
                             <td style={{ border: "1px solid" }}>{item.ProductName}</td>
-                            <td style={{ border: "1px solid" }}>{item.price}</td>
-                            
+                            <td style={{ border: "1px solid" }}>{item.price}</td>   
                             <td style={{ border: "1px solid" }}><button onClick={() => redirect(item)}>Atualizar</button> </td>
                             <td style={{ border: "1px solid" }}><button onClick={() => deleteSuppliers(item._id)}>Deletar</button> </td>
 
@@ -84,7 +82,8 @@ function SuppliersList() {
                     })}
                 </tbody>
             </table>
-            <RedirectPages linkPage="/" page="Voltar para Home"/>
+            <ButtonRedirect page="" nameButton="Voltar para home"/>
+            <ButtonRedirect page="CreateSuppliers" nameButton="Cadastrar novo Fornecedores"/>
         </div>
 
 
