@@ -1,31 +1,10 @@
-import { useState, useEffect } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { Form, FormikProvider, useFormik } from 'formik';
 import * as Yup from "yup";
-import Select from "react-select";
-import makeAnimated from "react-select/animated";
 
 function UpdateSuppliers() {
   const navigate = useNavigate();
   const { state } = useLocation();
-  const animatedComponents = makeAnimated();
-
-  const [product, setProduct] = useState([]);
-  const stateProduct = state.item.product.map(product => ({ value: product._id, label: product.name }));
-  const [selectedProduct, setSelectedProduct] = useState(stateProduct);
-  useEffect(() => {
-    async function fetchMyAPI() {
-      let response = await fetch("http://localhost:3001/product");
-      const body = await response.json();
-      const productsSelect = body.products.map(productApi => ({ value: productApi._id, label: productApi.name }));
-      setProduct(productsSelect);
-    }
-    fetchMyAPI();
-  }, []);
-
-  useEffect(() => {
-    formik.setFieldValue("product", selectedProduct)
-  }, [selectedProduct]);
 
   const RegisterSchema = Yup.object().shape({
     socialDenomination: Yup.string()
@@ -92,12 +71,6 @@ function UpdateSuppliers() {
       .min(2, 'Muito curto!')
       .max(200, 'Muito grande!')
       .required('Preço do produto obrigatório!'),
-
-      product: Yup.array()
-      .nullable(true)
-      .min(1, 'Muito curto!')
-      .max(1, 'No maximo um produto!')
-      .required('Produto obrigatório!')
   });
 
   const formik = useFormik({
@@ -115,8 +88,7 @@ function UpdateSuppliers() {
       lineOfBusinesscontact: state.item.lineOfBusinesscontact,
       functions: state.item.functions,
       ProductName: state.item.ProductName,
-      price: state.item.price,
-      product: state.item.product.map(productApi => ({ value: productApi._id, label: productApi.name })),
+      price: state.item.price
     },
     validationSchema: RegisterSchema,
 
@@ -135,8 +107,7 @@ function UpdateSuppliers() {
         lineOfBusinesscontact: values.lineOfBusinesscontact,
         functions: values.functions,
         ProductName: values.ProductName,
-        price: values.price+ "",
-        product: selectedProduct.map(id => ({ _id: id.value }))
+        price: values.price+ ""
       }
       console.log("body", body)
       console.log("formik", formik)
@@ -298,25 +269,6 @@ function UpdateSuppliers() {
               {...getFieldProps('price')}
             />
             <div>{touched.price && errors.price}</div>
-          </div>
-
-          <div>
-            <Select
-              defaultValue={stateProduct}
-              components={animatedComponents}
-              placeholder="Selecione a produto"
-              isMulti
-              options={product}
-              onChange={(item) => setSelectedProduct(item)}
-              className="select"
-              isClearable={true}
-              isSearchable={true}
-              isDisabled={false}
-              isLoading={false}
-              isRtl={false}
-              closeMenuOnSelect={false}
-            />
-            <div>{touched.product && errors.product}</div>
           </div>
           <button type='submit'  >Atualizar evento</button>
           <Link to="/">Volta para pagina inicial</Link>

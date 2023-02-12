@@ -1,33 +1,12 @@
-import { useState, useEffect } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { Form, FormikProvider, useFormik } from 'formik';
 import * as Yup from "yup";
-import Select from "react-select";
-import makeAnimated from "react-select/animated";
 
 function UpdateClient() {
 
   const navigate = useNavigate();
   const {state} = useLocation();
-  const animatedComponents = makeAnimated();
-
-  const [products, setProducts] = useState([]);
-  const stateGender = state.item.product.map(producth => ({value: producth._id, label: producth.name}));
-  const [selectedProduct, setSelectedProduct] = useState(stateGender);
- 
-  useEffect(() => {
-    async function fetchMyAPI() {
-      let response = await fetch("http://localhost:3001/product");
-      const body = await response.json();
-      const productsSelect = body.products.map(productApi => ({ value: productApi._id, label: productApi.name }));
-      setProducts(productsSelect);
-    }
-    fetchMyAPI();
-  }, []);
-
-  useEffect(() => {
-    formik.setFieldValue("product", selectedProduct)
-   }, [selectedProduct]);
+  
   
   const RegisterSchema = Yup.object().shape({
     name: Yup.string()
@@ -63,12 +42,7 @@ function UpdateClient() {
     cpf: Yup.number()
     .min(11, 'Muito curto!')
     .max(99999999999, 'Muito grande!')
-    .required('CPF obrigadorio'),
-
-    product: Yup.array()
-    .nullable(true)
-    .min(1, 'Muito curto!')
-    .required('produto obrigatório!')
+    .required('CPF obrigadorio')
   });
 
 const formik = useFormik({
@@ -80,8 +54,7 @@ const formik = useFormik({
     address: state.item.address,
     dateOfBirth: state.item.dateOfBirth,
     sex: state.item.sex,
-    cpf: state.item.cpf,
-    product: state.item.product.map(productApi => ({ value: productApi._id, label: productApi.name }))
+    cpf: state.item.cpf
   },
   validationSchema: RegisterSchema,
 
@@ -94,8 +67,7 @@ const formik = useFormik({
         address: values.address,
         dateOfBirth: values.dateOfBirth+"",
         sex: values.sex,
-        cpf: values.cpf+"",
-        product: selectedProduct.map(id => ({_id:id.value}))
+        cpf: values.cpf+""
 
      }
      console.log("body",body)
@@ -202,27 +174,8 @@ const { errors, touched, handleSubmit, getFieldProps } = formik;
             <div>{touched.cpf && errors.cpf}</div>
           </div>
           
-          <div>
-          <Select
-            defaultValue={stateGender}
-            components={animatedComponents}
-            placeholder="Selecione os produtos"
-            isMulti
-            options={products}
-            onChange={(item) => setSelectedProduct(item)}
-            className="select"
-            isClearable={true}
-            isSearchable={true}
-            isDisabled={false}
-            isLoading={false}
-            isRtl={false}
-            closeMenuOnSelect={false}
-            
-          />
-          <div>{touched.product && errors.product}</div>
-          </div>
 
-          <button type='submit'  >Atualizar evento</button>
+          <button type='submit'  >Atualizar cliente</button>
           <Link to="/">Volta para pagina inicial</Link>  
         </Form>
       </FormikProvider>

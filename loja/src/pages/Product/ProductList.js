@@ -43,22 +43,22 @@ function ProductList() {
                 <tbody>
 
                     <tr>
-                        <td>Nome</td>
-                        <td>price</td>
-                        <td>description</td>
-                        <td>amount</td>
-                        <td>Id</td>
+                        <td>Nome do produto</td>
+                        <td>Preço</td>
+                        <td>Descrição</td>
+                        <td>Quantidade</td>
+                        <td>Fornecedor</td>
                         <td>Atualizar</td>
                         <td>Deletar</td>
                     </tr>
         
                     {itens.map(item => {
                         return <tr key={item._id} style={{ border: "1px solid" }}>
-                            <td style={{ border: "1px solid" }}>{item.name}</td>
+                            <td style={{ border: "1px solid" }}>{item.suppliers.map(io => io.ProductName)}</td>
                             <td style={{ border: "1px solid" }}>{item.price}</td>
                             <td style={{ border: "1px solid" }}>{item.description}</td>
                             <td style={{ border: "1px solid" }}>{item.amount}</td>
-                            <td style={{ border: "1px solid" }}>{item._id}</td>
+                            <td style={{ border: "1px solid" }}>{item.suppliers.map(io => io.socialDenomination)}</td>
                             <td style={{ border: "1px solid" }}><button onClick={() => redirect(item)}>Atualizar</button> </td>
                             <td style={{ border: "1px solid" }}><button onClick={() => deleteProduct(item._id)}>Deletar</button> </td>
                         </tr>

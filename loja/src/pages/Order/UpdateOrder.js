@@ -5,72 +5,97 @@ import * as Yup from "yup";
 import Select from "react-select";
 import makeAnimated from "react-select/animated";
 
-function UpdateProduct() {
+function UpdateOrder() {
 
   const navigate = useNavigate();
   const { state } = useLocation();
+  //console.log("item",state.item.products.map(selectNameProduct => ({label:selectNameProduct.socialDenomination})));
+  //console.log("itemioioioioioi",state)
   const animatedComponents = makeAnimated();
-  console.log("state", state)
 
-
-  const [supplierss, setSupplierss] = useState([]);
-  const stateGender = state.item.suppliers.map(suppliersh => ({ value: suppliersh._id, label: suppliersh.ProductName }));
-  const [selectedSuppliers, setSelectedSuppliers] = useState(stateGender);
+  //selecionar e buscar clientes
+  const [clientss, setClientss] = useState([]);
+  const stateGender = state.item.client.map(clientsh => ({ value: clientsh._id, label: clientsh.name }));
+  const [selectedClients, setSelectedClients] = useState(stateGender);
 
   useEffect(() => {
     async function fetchMyAPI() {
-      let response = await fetch("http://localhost:3001/suppliers");
+      let response = await fetch("http://localhost:3001/client");
       const body = await response.json();
-      const supplierssSelect = body.supplierss.map(suppliersApi => ({ value: suppliersApi._id, label: suppliersApi.ProductName }));
-      setSupplierss(supplierssSelect);
+      const clientssSelect = body.clients.map(clientsApi => ({ value: clientsApi._id, label: clientsApi.name }));
+      setClientss(clientssSelect);
     }
     fetchMyAPI();
   }, []);
 
   useEffect(() => {
-    formik.setFieldValue("suppliers", selectedSuppliers)
-  }, [selectedSuppliers]);
+    formik.setFieldValue("client", selectedClients)
+  }, [selectedClients]);
+///////////////////////////////////////////////////////////////////
+
+//selecionar e buscar produtos
+const [productss, setProductss] = useState([]);
+const stateProduct = state.item.products.map(productsh => ({ value: productsh._id, label: productsh.suppliers.map(ae => ae.ProductName) }));
+const [selectedProducts, setSelectedProducts] = useState(stateProduct);
+
+useEffect(() => {
+  async function fetchMyAPI() {
+    let response = await fetch("http://localhost:3001/product");
+    const body = await response.json();
+    const productsSelect = body.products.map(productsApi => ({ value: productsApi._id, label: productsApi.suppliers.map(ae => ae.ProductName) }));
+    setProductss(productsSelect);
+  }
+  fetchMyAPI();
+}, []);
+
+useEffect(() => {
+  formik.setFieldValue("products", selectedProducts)
+}, [selectedProducts]);
+//
+
 
 
   const RegisterSchema = Yup.object().shape({
-    price: Yup.number()
-      .min(2, 'Muito curto!')
-      .max(200, 'Muito grande!')
-      .required('Preço obrigatório!'),
     description: Yup.string()
       .min(2, 'Muito curto!')
       .max(200, 'Muito grande!')
       .required('Descrição obrigatório!'),
-    amount: Yup.number()
+      amount: Yup.number()
       .min(2, 'Muito curto!')
       .max(200, 'Muito grande!')
       .required('Quantidade obrigatório!'),
-      suppliers: Yup.array()
+      products: Yup.array()
+      .nullable(true)
+      .min(1, 'Muito curto!')
+      .required('Produto obrigatório!'),
+      client: Yup.array()
       .nullable(true)
       .min(1, 'Muito curto!')
       .max(1, 'No maximo um produto!')
-      .required('Produto obrigatório!')
+      .required('Cliente obrigatório!')
   });
 
   const formik = useFormik({
     initialValues: {
       id: state.item._id,
-      price: state.item.price,
       description: state.item.description,
       amount: state.item.amount,
-      suppliers: state.item.suppliers.map(suppliersApi => ({ value: suppliersApi._id, label: suppliersApi.ProductName }))
+      client: state.item.client.map(clientsApi => ({ value: clientsApi._id, label: clientsApi.ProductName })),
+      products: state.item.products
     },
     validationSchema: RegisterSchema,
-
+    
     onSubmit: async (values) => {
       const body = {
         id: values.id,
         name: values.name,
-        price: values.price + "",
         description: values.description,
         amount: values.amount + "",
-        suppliers: selectedSuppliers.map(id => ({ _id: id.value }))
+        client: selectedClients.map(id => ({ _id: id.value })),
+        products: selectedProducts.map(id => ({ _id: id.value }))
       }
+      console.log("formik",formik)
+      console.log("body",body)
       const settings = {
         method: 'put',
         headers: {
@@ -78,22 +103,27 @@ function UpdateProduct() {
           'Accept': 'application/json',
         },
         body: JSON.stringify(body)
-
+        
       };
-
+      
       try {
-        const fetchResponse = await fetch('http://localhost:3001/product/', settings);
+        const fetchResponse = await fetch('http://localhost:3001/order/', settings);
         console.log("fetchResponse", fetchResponse);
         console.log("settings", settings)
+        console.log("body",body)
         if (fetchResponse.status === 200) {
           formik.setFieldValue("name", null);
-          navigate('/productList', { replace: true });
+          navigate('/OrderList', { replace: true });
         }
       } catch (e) {
         console.error(e);
+        console.log("body",body)
       }
+      console.log("formik",formik)
     }
+    
   });
+ 
 
   const { errors, touched, handleSubmit, getFieldProps } = formik;
 
@@ -102,14 +132,15 @@ function UpdateProduct() {
       <FormikProvider value={formik}>
         <Form autoComplete='off' noValidate onSubmit={handleSubmit}>
 
+
         <div>
             <Select
-              defaultValue={stateGender}
+              defaultValue={stateProduct}
               components={animatedComponents}
               placeholder="Selecione os produtos"
               isMulti
-              options={supplierss}
-              onChange={(item) => setSelectedSuppliers(item)}
+              options={productss}
+              onChange={(item) => setSelectedProducts(item)}
               className="select"
               isClearable={true}
               isSearchable={true}
@@ -119,17 +150,27 @@ function UpdateProduct() {
               closeMenuOnSelect={false}
 
             />
-            <div>{touched.suppliers && errors.suppliers}</div>
+            <div>{touched.products && errors.products}</div>
           </div>
 
-          <div>
-            <input
-              type="number"
-              id="price"
-              placeholder="Digite o preço do produto"
-              {...getFieldProps('price')}
+        <div>
+            <Select
+              defaultValue={stateGender}
+              components={animatedComponents}
+              placeholder="Selecione os clientes"
+              isMulti
+              options={clientss}
+              onChange={(item) => setSelectedClients(item)}
+              className="select"
+              isClearable={true}
+              isSearchable={true}
+              isDisabled={false}
+              isLoading={false}
+              isRtl={false}
+              closeMenuOnSelect={false}
+
             />
-            <div>{touched.price && errors.price}</div>
+            <div>{touched.client && errors.client}</div>
           </div>
 
           <div>
@@ -162,4 +203,4 @@ function UpdateProduct() {
   );
 }
 
-export default UpdateProduct;
+export default UpdateOrder;

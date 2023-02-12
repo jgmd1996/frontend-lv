@@ -2,33 +2,11 @@ import { useNavigate } from 'react-router-dom';
 import { Form, FormikProvider, useFormik } from 'formik';
 import * as Yup from "yup";
 import React from 'react';
-import { useEffect, useState } from 'react'
-import Select from "react-select";
-import makeAnimated from "react-select/animated";
 import RedirectPages from '../../components/RedirectPages';
 import "./style.css";
 
 function CreateSuppliers() {
-
-  const animatedComponents = makeAnimated();
   const navigate = useNavigate();
-
-  // selecionar e busca a banda
-  const [product, setProduct] = useState([]);
-  const [selectedProduct, setSelectedProduct] = useState({});
-  useEffect(() => {
-    async function fetchMyAPI() {
-      let response = await fetch("http://localhost:3001/product");
-      const body = await response.json();
-      const productsSelect = body.products.map(productApi => ({ value: productApi._id, label: productApi.name }));
-      setProduct(productsSelect);
-    }
-    fetchMyAPI();
-  }, []);
-
-  useEffect(() => {
-    formik.setFieldValue("product", selectedProduct)
-  }, [selectedProduct]);
 
   const RegisterSchema = Yup.object().shape({
     socialDenomination: Yup.string()
@@ -95,12 +73,6 @@ function CreateSuppliers() {
       .min(2, 'Muito curto!')
       .max(200, 'Muito grande!')
       .required('Preço do produto obrigatório!'),
-
-      product: Yup.array()
-      .nullable(true)
-      .min(1, 'Muito curto!')
-      .max(1, 'No maximo um produto!')
-      .required('Produto obrigatório!')
   });
 
   const formik = useFormik({
@@ -118,7 +90,7 @@ function CreateSuppliers() {
       functions: '',
       ProductName: '',
       price: '',
-      product: ''
+      
     },
 
     validationSchema: RegisterSchema,
@@ -138,7 +110,7 @@ function CreateSuppliers() {
         functions: values.functions,
         ProductName: values.ProductName,
         price: values.price + "",
-        product: selectedProduct.map(id => ({ _id: id.value }))
+        
       };
       console.log("body", body)
       const settings = {
@@ -306,23 +278,7 @@ function CreateSuppliers() {
             <div>{touched.price && errors.price}</div>
           </div>
 
-          <div>
-            <Select
-              components={animatedComponents}
-              placeholder="Selecione a produtos"
-              isMulti
-              options={product}
-              onChange={(item) => setSelectedProduct(item)}
-              className="select"
-              isClearable={true}
-              isSearchable={true}
-              isDisabled={false}
-              isLoading={false}
-              isRtl={false}
-              closeMenuOnSelect={false}
-            />
-            <div>{touched.product && errors.product}</div>
-          </div>
+          
 
           <div>{touched.category && errors.category}</div>
           <button type='submit'>Criar produtos</button>

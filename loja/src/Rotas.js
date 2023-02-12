@@ -14,6 +14,10 @@ import CreateClient from './pages/Client/CreateClient';
 import ClientList from './pages/Client/ClientList';
 import UpdateClient from './pages/Client/UpdateClient';
 
+import OrderList from './pages/Order/OrderList';
+import CreateOrder from './pages/Order/ CreateOrder';
+import UpdateOrder from './pages/Order/UpdateOrder';
+
 
 
 
@@ -36,6 +40,10 @@ const Rotas =() => {
         <Route path="/CreateClient" element={<CreateClient />} />
         <Route path="/ClientList" element={<ClientList />} />
         <Route path="/UpdateClient" element={<UpdateClient />} />
+
+        <Route path="/CreateOrder" element={<CreateOrder />} />
+        <Route path="/OrderList" element={<OrderList />} />
+        <Route path="/UpdateOrder" element={<UpdateOrder />} />
     
       </Routes>
       </BrowserRouter>

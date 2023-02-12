@@ -3,9 +3,9 @@ import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom';
 import CustomComponente2 from '../../components/CustomComponente2';
 import RedirectPages from '../../components/RedirectPages';
-import "./style.css";
 
-function ClientList() {
+
+function OrderList() {
 
     const [itens, setItens] = useState([]);
 
@@ -14,20 +14,20 @@ function ClientList() {
     const [refreshPage, setRefreshPage] = useState('');
 
     const redirect = (item) => {
-        navigate('/Updateclient', { replace: false, state: { item: item } });//
+        navigate('/UpdateOrder', { replace: false, state: { item: item } });//
     }
 
     useEffect(() => {
         async function fetchMyAPI() {
-            let response = await fetch("http://localhost:3001/client")
+            let response = await fetch("http://localhost:3001/order")
             const body = await response.json()
-            setItens(body.clients)
+            setItens(body.orders)
         }
         fetchMyAPI()
     }, [refreshPage]);
 
     async function deletarCategoria(id) {
-        let result = await fetch("http://localhost:3001/client/" + id, {
+        let result = await fetch("http://localhost:3001/order/" + id, {
             method: 'DELETE',
             headers: {
                 'Authorization': 'Bearer my-token',
@@ -41,29 +41,23 @@ function ClientList() {
 
     return (
         <div>
-            <CustomComponente2 nome="lista cliente" texto="Aqui vamos listar todos os cliente com todas as suas informaçoes"/>
+            <CustomComponente2 nome="lista Ordem" texto="Aqui vamos listar todos os Ordem com todas as suas informaçoes"/>
             <table style={{ border: "1px solid" }}>
                 <tbody>
                     <tr>
-                        <td>Nome</td>
-                        <td>E-mail</td>
-                        <td>Numero</td>
-                        <td>Endereço</td>
-                        <td>dateOfBirth</td>  
-                        <td>Sexo</td>
-                        <td>CPF</td>
+                        <td>client</td>
+                        <td>products</td>
+                        <td>description</td>
+                        <td>amount</td>
                         <td>ID</td>
                     </tr>
                     {itens.map(item => {
 
                         return <tr key={item._id} style={{ border: "1px solid" }}>
-                            <td style={{ border: "1px solid" }}>{item.name}</td>
-                            <td style={{ border: "1px solid" }}>{item.email}</td>
-                            <td style={{ border: "1px solid" }}>{item.telephone}</td>
-                            <td style={{ border: "1px solid" }}>{item.address}</td>
-                            <td style={{ border: "1px solid" }}>{item.dateOfBirth}</td>
-                            <td style={{ border: "1px solid" }}>{item.sex}</td>
-                            <td style={{ border: "1px solid" }}>{item.cpf}</td>
+                            <td style={{ border: "1px solid" }}>{item.client.map(nomeCliente => nomeCliente.name)}</td>
+                            <td style={{ border: "1px solid" }}>{item.products.map(io => io.suppliers.map(ae => ae.ProductName))}</td>
+                            <td style={{ border: "1px solid" }}>{item.description}</td>
+                            <td style={{ border: "1px solid" }}>{item.amount}</td>
                             <td style={{ border: "1px solid" }}><button onClick={() => redirect(item)}>Atualizar</button> </td>
                             <td style={{ border: "1px solid" }}><button onClick={() => deletarCategoria(item._id)}>Deletar</button> </td>
 
@@ -78,4 +72,4 @@ function ClientList() {
     );
 }
 
-export default ClientList;
+export default OrderList;

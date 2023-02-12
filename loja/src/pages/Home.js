@@ -8,21 +8,24 @@ function Home() {
           <tbody>
 
             <tr>
+            <td><RedirectPages NamePage="Fornecedores"/></td>
               <td><RedirectPages NamePage="produtos"/></td>
-              <td><RedirectPages NamePage="Fornecedores"/></td>
               <td><RedirectPages NamePage="Cliente"/></td>
+              <td><RedirectPages NamePage="Pedidos"/></td>
             </tr>
 
             <tr align="center">
+            <td><RedirectPages linkPage="CreateSuppliers" page="Criar Fornecedor"/></td>
              <td><RedirectPages linkPage="createProduct" page="Criar produtos"/></td>
-             <td><RedirectPages linkPage="CreateSuppliers" page="Criar Fornecedor"/></td>
              <td><RedirectPages linkPage="CreateClient" page="Criar nova Cliente"/></td>
+             <td><RedirectPages linkPage="CreateOrder" page="Criar novo pedido"/></td>
             </tr>
 
             <tr>
-            <td><RedirectPages linkPage="ProductList" page="Listar produtos"/></td>
             <td><RedirectPages linkPage="SuppliersList" page="Listar Fornecedores"/></td>
+            <td><RedirectPages linkPage="ProductList" page="Listar produtos"/></td>
             <td><RedirectPages linkPage="ClientList" page="Listar Clientes"/></td>
+            <td><RedirectPages linkPage="OrderList" page="Listar pedidos"/></td>
             </tr>
 
           </tbody>
