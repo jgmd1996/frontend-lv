@@ -72,7 +72,6 @@ const formik = useFormik({
         cpf: values.cpf+""
 
      }
-     console.log("body",body)
     const settings = {
       method: 'put',
       headers: {
@@ -82,17 +81,12 @@ const formik = useFormik({
       body: JSON.stringify(body)
     };
     try {
-      console.log("body",body)
       const fetchResponse = await fetch('http://localhost:3001/client/',settings);  
-      console.log("fetchResponse",fetchResponse);
-      console.log("body",body)
       if (fetchResponse.status === 200) {
         formik.setFieldValue("name", null);
         navigate('/ClientList', { replace: true });
-        console.log("body",body)
       }
     } catch (e) {
-      console.log("body",body)
       console.error(e);
     }
   }

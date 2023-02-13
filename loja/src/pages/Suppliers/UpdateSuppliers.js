@@ -111,8 +111,6 @@ function UpdateSuppliers() {
         ProductName: values.ProductName,
         price: values.price+ ""
       }
-      console.log("body", body)
-      console.log("formik", formik)
       const settings = {
         method: 'put',
         headers: {
@@ -123,7 +121,6 @@ function UpdateSuppliers() {
       };
       try {
         const fetchResponse = await fetch('http://localhost:3001/suppliers/', settings);
-        console.log("fetchResponse", fetchResponse);
         if (fetchResponse.status === 200) {
           formik.setFieldValue("name", null);
           navigate('/SuppliersList', { replace: true });
@@ -131,7 +128,6 @@ function UpdateSuppliers() {
       } catch (e) {
         console.error(e);
       }
-      console.log("body", body)
     }
   });
 

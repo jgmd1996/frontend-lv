@@ -20,7 +20,6 @@ function  CreateProduct() {
       let response = await fetch("http://localhost:3001/suppliers");
       const body = await response.json();
       const supplierssSelect = body.supplierss.map(suppliersApi => ({ value: suppliersApi._id, label: suppliersApi.ProductName }));
-      console.log("++supplierssSelect",supplierssSelect)
       setSupplier(supplierssSelect);
     }
     fetchMyAPI();
@@ -76,7 +75,6 @@ function  CreateProduct() {
       };
       try {
         const fetchResponse = await fetch('http://localhost:3001/product', settings);
-        console.log("fetchResponse", fetchResponse);
         if (fetchResponse.status === 201) {
           formik.setFieldValue("name", null);
           navigate('/productList', { replace: true });

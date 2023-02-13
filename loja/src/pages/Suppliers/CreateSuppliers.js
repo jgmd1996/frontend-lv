@@ -113,7 +113,6 @@ function CreateSuppliers() {
         price: values.price + "",
         
       };
-      console.log("body", body)
       const settings = {
         method: 'POST',
         headers: {
@@ -123,21 +122,16 @@ function CreateSuppliers() {
         body: JSON.stringify(body)
 
       };
-      console.log("body", body)
+
       try {
-        console.log("body", body)
         const fetchResponse = await fetch('http://localhost:3001/suppliers', settings);
-        console.log("fetchResponse", fetchResponse);
-        console.log("body", body)
         if (fetchResponse.status === 201) {
           formik.setFieldValue("name", null);
           navigate('/SuppliersList', { replace: true });
         }
       } catch (e) {
-        console.log("body", body)
         console.error(e);
       }
-      console.log("body", body)
     }
   });
 

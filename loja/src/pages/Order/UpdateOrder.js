@@ -11,8 +11,6 @@ function UpdateOrder() {
 
   const navigate = useNavigate();
   const { state } = useLocation();
-  //console.log("item",state.item.products.map(selectNameProduct => ({label:selectNameProduct.socialDenomination})));
-  //console.log("itemioioioioioi",state)
   const animatedComponents = makeAnimated();
 
   //selecionar e buscar clientes
@@ -96,8 +94,6 @@ useEffect(() => {
         client: selectedClients.map(id => ({ _id: id.value })),
         products: selectedProducts.map(id => ({ _id: id.value }))
       }
-      console.log("formik",formik)
-      console.log("body",body)
       const settings = {
         method: 'put',
         headers: {
@@ -110,18 +106,13 @@ useEffect(() => {
       
       try {
         const fetchResponse = await fetch('http://localhost:3001/order/', settings);
-        console.log("fetchResponse", fetchResponse);
-        console.log("settings", settings)
-        console.log("body",body)
         if (fetchResponse.status === 200) {
           formik.setFieldValue("name", null);
           navigate('/OrderList', { replace: true });
         }
       } catch (e) {
         console.error(e);
-        console.log("body",body)
       }
-      console.log("formik",formik)
     }
     
   });

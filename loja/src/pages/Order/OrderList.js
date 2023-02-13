@@ -7,8 +7,6 @@ import List from '../../components/List';
 function OrderList() {
 
     const [itens, setItens] = useState([]);
-
-    console.log(itens);
     const navigate = useNavigate();
     const [refreshPage, setRefreshPage] = useState('');
 

@@ -14,7 +14,6 @@ function CreateOrder() {
 
   // selecionar e busca produto
   const [product, setProduct] = useState([]);
-  console.log("product",product)
   const [selectedProduct, setSelectedProduct] = useState({});
   useEffect(() => {
     async function fetchMyAPI() {
@@ -34,7 +33,6 @@ function CreateOrder() {
 
  // selecionar e busca cliente
  const [client, setClient] = useState([]);
- console.log("client",client)
  const [selectedClient, setSelectedClient] = useState({});
  useEffect(() => {
    async function fetchMyAPI() {
@@ -99,7 +97,6 @@ function CreateOrder() {
       };
       try {
         const fetchResponse = await fetch('http://localhost:3001/order', settings);
-        console.log("fetchResponse", fetchResponse);
         if (fetchResponse.status === 201) {
           formik.setFieldValue("name", null);
           navigate('/OrderList', { replace: true });

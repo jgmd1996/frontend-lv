@@ -18,7 +18,6 @@ function ProductList() {
         async function fetchMyAPI() {
             let response = await fetch("http://localhost:3001/product");
             const body = await response.json();
-            console.log("body",body)
             setItens(body.products);
         }
         fetchMyAPI()

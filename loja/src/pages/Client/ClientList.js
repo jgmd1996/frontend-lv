@@ -8,8 +8,6 @@ import "./style.css";
 function ClientList() {
 
     const [itens, setItens] = useState([]);
-
-    console.log(itens);
     const navigate = useNavigate();
     const [refreshPage, setRefreshPage] = useState('');
 
@@ -35,7 +33,6 @@ function ClientList() {
             }
         });
         result = await result.json();
-        console.warn(result);
         setRefreshPage(result);
     };
 

@@ -70,7 +70,6 @@ function CreateClient() {
         sex: values.sex,
         cpf: values.cpf
       };
-      console.log("body",body)
       const settings = {
         method: 'POST',
         headers: {
@@ -80,10 +79,8 @@ function CreateClient() {
         body: JSON.stringify(body)
       };
       try {
-        console.log("body",body)
+
         const fetchResponse = await fetch('http://localhost:3001/client', settings);
-        console.log("fetchResponse", fetchResponse);
-        console.log("settings",settings)
         if (fetchResponse.status === 201) {
           formik.setFieldValue("name", null);
           navigate('/ClientList', { replace: true });
@@ -91,7 +88,6 @@ function CreateClient() {
       } catch (e) {
         console.error(e);
       }
-      console.log("body",body)
     }
   });
 

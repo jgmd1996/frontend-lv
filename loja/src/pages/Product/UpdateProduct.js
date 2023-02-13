@@ -13,7 +13,6 @@ function UpdateProduct() {
   const navigate = useNavigate();
   const { state } = useLocation();
   const animatedComponents = makeAnimated();
-  console.log("state", state)
 
 
   const [supplierss, setSupplierss] = useState([]);
@@ -86,8 +85,6 @@ function UpdateProduct() {
 
       try {
         const fetchResponse = await fetch('http://localhost:3001/product/', settings);
-        console.log("fetchResponse", fetchResponse);
-        console.log("settings", settings)
         if (fetchResponse.status === 200) {
           formik.setFieldValue("name", null);
           navigate('/productList', { replace: true });
