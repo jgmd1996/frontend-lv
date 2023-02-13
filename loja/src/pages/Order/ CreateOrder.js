@@ -5,6 +5,7 @@ import Select from "react-select";
 import makeAnimated from "react-select/animated";
 import * as Yup from "yup";
 import ButtonRedirect from '../../components/ButtonRedirect';
+import Create from '../../components/Create';
 
 function CreateOrder() {
 
@@ -115,7 +116,7 @@ function CreateOrder() {
     <>
       <FormikProvider value={formik}>
         <Form autoComplete='off' noValidate onSubmit={handleSubmit}>
-
+        <Create name="Pedido"/>
         <div>
             <Select
               components={animatedComponents}
@@ -174,7 +175,7 @@ function CreateOrder() {
 
          
 
-          <button type='submit'>Criar novo produto</button>
+          <button type='submit'>Criar novo pedido</button>
           <ButtonRedirect page="OrderList" nameButton="Voltar"/>
         </Form>
       </FormikProvider>

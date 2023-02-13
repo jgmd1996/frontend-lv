@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom';
 import ButtonRedirect from '../../components/ButtonRedirect';
 import "./style.css";
+import List from '../../components/List';
 
 function SuppliersList() {
 
@@ -39,24 +40,25 @@ function SuppliersList() {
 
     return (
         <div>
+             <List nome="Fornecedores" />
             <table style={{ border: "1px solid" }}>
                 <tbody>
                     <tr>
-                        <td>Denominação social</td>
-                        <td>Endereço</td>
-                        <td>Bairro da empresa</td>
-                        <td>uf</td>
-                        <td>Cidade</td>
-                        <td>Telefone</td>
-                        <td>CEP</td>
-                        <td>E-mail</td>
-                        <td>CNPJ</td>
-                        <td>Linha de negócios</td>
-                        <td>Função</td>
-                        <td>Name do produto</td>
-                        <td>Preço</td>
-                        <td>Atualizar</td>
-                        <td>Deletar</td>
+                        <td align='center'>Denominação social</td>
+                        <td align='center'>Endereço</td>
+                        <td align='center'>Bairro da empresa</td>
+                        <td align='center'>UF</td>
+                        <td align='center'>Cidade</td>
+                        <td align='center'>Telefone</td>
+                        <td align='center'>CEP</td>
+                        <td align='center'>E-mail</td>
+                        <td align='center'>CNPJ</td>
+                        <td align='center'>Linha de negócios</td>
+                        <td align='center'>Função</td>
+                        <td align='center'>Nome do produto</td>
+                        <td align='center'>Preço</td>
+                        <td align='center'>Atualizar</td>
+                        <td align='center'>Deletar</td>
                         
                     </tr>
                     {itens.map(item => {
@@ -83,7 +85,7 @@ function SuppliersList() {
                 </tbody>
             </table>
             <ButtonRedirect page="" nameButton="Voltar para home"/>
-            <ButtonRedirect page="CreateSuppliers" nameButton="Cadastrar novo Fornecedores"/>
+            <ButtonRedirect page="CreateSuppliers" nameButton="Cadastrar novo Fornecedor"/>
         </div>
 
 

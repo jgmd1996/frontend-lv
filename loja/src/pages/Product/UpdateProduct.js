@@ -1,9 +1,12 @@
 import { useState, useEffect } from 'react';
-import { Link, useNavigate, useLocation } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { Form, FormikProvider, useFormik } from 'formik';
 import * as Yup from "yup";
 import Select from "react-select";
 import makeAnimated from "react-select/animated";
+import ButtonRedirect from '../../components/ButtonRedirect';
+import Update from '../../components/Update';
+
 
 function UpdateProduct() {
 
@@ -101,7 +104,7 @@ function UpdateProduct() {
     <>
       <FormikProvider value={formik}>
         <Form autoComplete='off' noValidate onSubmit={handleSubmit}>
-
+        <Update name="Produto" />
         <div>
             <Select
               defaultValue={stateGender}
@@ -154,8 +157,9 @@ function UpdateProduct() {
 
           
 
-          <button type='submit'>Atualizar novo produto</button>
-          <Link to="/">Voltar para pagina inicial </Link>
+          <button type='submit'>Atualizar produto</button>
+          
+          <ButtonRedirect page="ProductList" nameButton="Voltar"/>
         </Form>
       </FormikProvider>
     </>

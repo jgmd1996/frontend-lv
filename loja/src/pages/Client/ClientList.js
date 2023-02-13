@@ -2,7 +2,7 @@ import React from 'react';
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom';
 import ButtonRedirect from '../../components/ButtonRedirect';
-import CustomComponente2 from '../../components/CustomComponente2';
+import List from '../../components/List';
 import "./style.css";
 
 function ClientList() {
@@ -41,18 +41,19 @@ function ClientList() {
 
     return (
         <div>
-            <CustomComponente2 nome="lista cliente" texto="Aqui vamos listar todos os cliente com todas as suas informaçoes"/>
+            <List nome="Clientes"/>
             <table style={{ border: "1px solid" }}>
                 <tbody>
                     <tr>
-                        <td>Nome</td>
-                        <td>E-mail</td>
-                        <td>Numero</td>
-                        <td>Endereço</td>
-                        <td>dateOfBirth</td>  
-                        <td>Sexo</td>
-                        <td>CPF</td>
-                        <td>ID</td>
+                        <td align='center'>Nome</td>
+                        <td align='center'>E-mail</td>
+                        <td align='center'>Numero</td>
+                        <td align='center'>Endereço</td>
+                        <td align='center'>Data de nascimento</td>  
+                        <td align='center'>Sexo</td>
+                        <td align='center'>CPF</td>
+                        <td align='center'>Atualizar</td>
+                        <td align='center'>Deletar</td>
                     </tr>
                     {itens.map(item => {
 

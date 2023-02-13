@@ -2,6 +2,7 @@ import React from 'react';
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom';
 import ButtonRedirect from '../../components/ButtonRedirect';
+import List from '../../components/List';
 
 function ProductList() {
     
@@ -39,17 +40,18 @@ function ProductList() {
     return (
 
         <div>
+            <List nome="Produtos" />
             <table style={{ border: "1px solid" }}>
                 <tbody>
 
                     <tr>
-                        <td>Nome do produto</td>
-                        <td>Preço</td>
-                        <td>Descrição</td>
-                        <td>Quantidade</td>
-                        <td>Fornecedor</td>
-                        <td>Atualizar</td>
-                        <td>Deletar</td>
+                        <td align='center'>Nome do produto</td>
+                        <td align='center'>Preço</td>
+                        <td align='center'>Descrição</td>
+                        <td align='center'>Quantidade</td>
+                        <td align='center'>Fornecedor</td>
+                        <td align='center'>Atualizar</td>
+                        <td align='center'>Deletar</td>
                     </tr>
         
                     {itens.map(item => {

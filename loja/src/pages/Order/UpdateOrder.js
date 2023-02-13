@@ -1,9 +1,11 @@
 import { useState, useEffect } from 'react';
-import { Link, useNavigate, useLocation } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { Form, FormikProvider, useFormik } from 'formik';
 import * as Yup from "yup";
 import Select from "react-select";
 import makeAnimated from "react-select/animated";
+import Update from '../../components/Update';
+import ButtonRedirect from '../../components/ButtonRedirect';
 
 function UpdateOrder() {
 
@@ -131,8 +133,7 @@ useEffect(() => {
     <>
       <FormikProvider value={formik}>
         <Form autoComplete='off' noValidate onSubmit={handleSubmit}>
-
-
+      <Update name="Pedido" />
         <div>
             <Select
               defaultValue={stateProduct}
@@ -195,8 +196,9 @@ useEffect(() => {
 
           
 
-          <button type='submit'>Atualizar novo produto</button>
-          <Link to="/">Voltar para pagina inicial </Link>
+          <button type='submit'>Atualizar Pedido</button>
+          
+          <ButtonRedirect page="OrderList" nameButton="Voltar"/>
         </Form>
       </FormikProvider>
     </>

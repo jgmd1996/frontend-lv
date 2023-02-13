@@ -2,7 +2,7 @@ import React from 'react';
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom';
 import ButtonRedirect from '../../components/ButtonRedirect';
-import CustomComponente2 from '../../components/CustomComponente2';
+import List from '../../components/List';
 
 function OrderList() {
 
@@ -40,15 +40,16 @@ function OrderList() {
 
     return (
         <div>
-            <CustomComponente2 nome="lista Ordem" texto="Aqui vamos listar todos os Ordem com todas as suas informaçoes"/>
+            <List nome="Pedidos" />
             <table style={{ border: "1px solid" }}>
                 <tbody>
                     <tr>
-                        <td>client</td>
-                        <td>products</td>
-                        <td>description</td>
-                        <td>amount</td>
-                        <td>ID</td>
+                        <td align='center'>Clientes</td>
+                        <td align='center'>Produtos</td>
+                        <td align='center'>Descrição</td>
+                        <td align='center'>Quantidade</td>
+                        <td align='center'>Atualizar</td>
+                        <td align='center'>Deletar</td>
                     </tr>
                     {itens.map(item => {
 
@@ -65,7 +66,7 @@ function OrderList() {
                 </tbody>
             </table>
             <ButtonRedirect page="" nameButton="Voltar para home"/>
-            <ButtonRedirect page="CreateSuppliers" nameButton="Cadastrar novo pedido"/>  
+            <ButtonRedirect page="CreateOrder" nameButton="Cadastrar novo pedido"/>  
         </div>
 
 

@@ -1,6 +1,8 @@
-import { Link, useNavigate, useLocation } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { Form, FormikProvider, useFormik } from 'formik';
 import * as Yup from "yup";
+import ButtonRedirect from '../../components/ButtonRedirect';
+import Update from '../../components/Update';
 
 function UpdateSuppliers() {
   const navigate = useNavigate();
@@ -139,8 +141,7 @@ function UpdateSuppliers() {
     <>
       <FormikProvider value={formik}>
         <Form autoComplete='off' noValidate onSubmit={handleSubmit}>
-
-          <h1>Atuallizar evento</h1>
+        <Update name="Fornecedor" />
           <div>
             <input
               type="text"
@@ -270,8 +271,9 @@ function UpdateSuppliers() {
             />
             <div>{touched.price && errors.price}</div>
           </div>
-          <button type='submit'  >Atualizar evento</button>
-          <Link to="/">Volta para pagina inicial</Link>
+          <button type='submit'  >Atualizar Fornecedor</button>
+          
+          <ButtonRedirect page="SuppliersList" nameButton="Voltar"/>
         </Form>
       </FormikProvider>
     </>

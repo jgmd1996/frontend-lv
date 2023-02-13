@@ -4,6 +4,7 @@ import * as Yup from "yup";
 import React from 'react';
 import "./style.css";
 import ButtonRedirect from '../../components/ButtonRedirect';
+import Create from '../../components/Create';
 
 function CreateSuppliers() {
   const navigate = useNavigate();
@@ -146,7 +147,7 @@ function CreateSuppliers() {
     <>
       <FormikProvider value={formik}>
         <Form autoComplete='off' noValidate onSubmit={handleSubmit}>
-          <h1>Criar Fornecedor</h1>
+        <Create name="Fornecedor"/>
 
           <div>
             <input
@@ -281,7 +282,7 @@ function CreateSuppliers() {
           
 
           <div>{touched.category && errors.category}</div>
-          <button type='submit'>Criar produtos</button>
+          <button type='submit'>Criar Fornecedor</button>
           <ButtonRedirect page="SuppliersList" nameButton="Voltar"/>
         </Form>
       </FormikProvider>

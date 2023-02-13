@@ -5,6 +5,7 @@ import Select from "react-select";
 import makeAnimated from "react-select/animated";
 import * as Yup from "yup";
 import ButtonRedirect from '../../components/ButtonRedirect';
+import Create from '../../components/Create';
 
 function  CreateProduct() {
 
@@ -92,7 +93,7 @@ function  CreateProduct() {
     <>
       <FormikProvider value={formik}>
         <Form autoComplete='off' noValidate onSubmit={handleSubmit}>
-
+        <Create name="Produto"/>
         <div>
             <Select
               components={animatedComponents}

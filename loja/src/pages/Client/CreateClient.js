@@ -4,6 +4,7 @@ import * as Yup from "yup";
 import React from 'react';
 import "./style.css";
 import ButtonRedirect from '../../components/ButtonRedirect';
+import Create from '../../components/Create';
 
 function CreateClient() {
   const navigate = useNavigate();
@@ -101,13 +102,13 @@ function CreateClient() {
     <>
       <FormikProvider value={formik}>
         <Form autoComplete='off' noValidate onSubmit={handleSubmit}>
-          <h1>Cadastrar novo cliente</h1>
+        <Create name="Cliente"/>
 
           <div>
             <input
               type="text"
               id="name"
-              placeholder="Digite o name"
+              placeholder="Digite o nome"
               {...getFieldProps('name')}
             />
             <div>{touched.name && errors.name}</div>
@@ -117,7 +118,7 @@ function CreateClient() {
             <input
               type="text"
               id="email"
-              placeholder="Digite o email"
+              placeholder="Digite o E-mail"
               {...getFieldProps('email')}
             />
             <div>{touched.email && errors.email}</div>
@@ -127,7 +128,7 @@ function CreateClient() {
             <input
               type="text"
               id="telephone"
-              placeholder="Digite o telephone"
+              placeholder="Digite o telefone"
               {...getFieldProps('telephone')}
             />
             <div>{touched.telephone && errors.telephone}</div>

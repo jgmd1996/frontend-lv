@@ -1,6 +1,8 @@
-import { Link, useNavigate, useLocation } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { Form, FormikProvider, useFormik } from 'formik';
 import * as Yup from "yup";
+import Update from '../../components/Update';
+import ButtonRedirect from '../../components/ButtonRedirect';
 
 function UpdateClient() {
 
@@ -102,13 +104,12 @@ const { errors, touched, handleSubmit, getFieldProps } = formik;
     <>
       <FormikProvider value={formik}>
         <Form autoComplete='off' noValidate onSubmit={handleSubmit}>
-
-        <h1>Atuallizar cliente</h1>
+        <Update name="Cliente" />
         <div>
             <input
               type="text"
               id="name"
-              placeholder="Digite o name"
+              placeholder="Digite o nome"
               {...getFieldProps('name')}
             />
             <div>{touched.name && errors.name}</div>
@@ -118,7 +119,7 @@ const { errors, touched, handleSubmit, getFieldProps } = formik;
             <input
               type="text"
               id="email"
-              placeholder="Digite o email"
+              placeholder="Digite o E-mail"
               {...getFieldProps('email')}
             />
             <div>{touched.email && errors.email}</div>
@@ -128,7 +129,7 @@ const { errors, touched, handleSubmit, getFieldProps } = formik;
             <input
               type="text"
               id="telephone"
-              placeholder="Digite o telephone"
+              placeholder="Digite o telefone"
               {...getFieldProps('telephone')}
             />
             <div>{touched.telephone && errors.telephone}</div>
@@ -176,7 +177,7 @@ const { errors, touched, handleSubmit, getFieldProps } = formik;
           
 
           <button type='submit'  >Atualizar cliente</button>
-          <Link to="/">Volta para pagina inicial</Link>  
+          <ButtonRedirect page="ClientList" nameButton="Voltar"/>
         </Form>
       </FormikProvider>
     </>
