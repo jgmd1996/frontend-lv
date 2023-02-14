@@ -9,7 +9,7 @@ import Create from '../../components/Create';
 function CreateSuppliers() {
   const navigate = useNavigate();
 
-  const RegisterSchema = Yup.object().shape({
+  const RegisterSchema = Yup.object().shape({// aqui e onde fica a validaçao do formulario.
     socialDenomination: Yup.string()
       .min(2, 'Muito curto!')
       .max(200, 'Muito grande!')
@@ -76,7 +76,7 @@ function CreateSuppliers() {
       .required('Preço do produto obrigatório!'),
   });
 
-  const formik = useFormik({
+  const formik = useFormik({//aqui fica o valor inicial do formulário
     initialValues: {
       socialDenomination: '',
       address: '',
@@ -113,7 +113,7 @@ function CreateSuppliers() {
         price: values.price + "",
         
       };
-      const settings = {
+      const settings = {//aqui é onde vai subir o formulário já validado para o back-end.
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -127,7 +127,7 @@ function CreateSuppliers() {
         const fetchResponse = await fetch('http://localhost:3001/suppliers', settings);
         if (fetchResponse.status === 201) {
           formik.setFieldValue("name", null);
-          navigate('/SuppliersList', { replace: true });
+          navigate('/SuppliersList', { replace: true });//aqui é onde vai redirecionar para página de listar fornecedor, quando os dados subirem para o back end corretamente
         }
       } catch (e) {
         console.error(e);
@@ -137,11 +137,11 @@ function CreateSuppliers() {
 
   const { errors, touched, handleSubmit, getFieldProps } = formik;
 
-  return (
+  return (//aqui fica os campos do formulário
     <>
       <FormikProvider value={formik}>
         <Form autoComplete='off' noValidate onSubmit={handleSubmit}>
-        <Create name="Fornecedor"/>
+        <Create name="Fornecedor"/>{/*componente de título e texto */}
 
           <div>
             <input
@@ -277,7 +277,7 @@ function CreateSuppliers() {
 
           <div>{touched.category && errors.category}</div>
           <button type='submit'>Criar Fornecedor</button>
-          <ButtonRedirect page="SuppliersList" nameButton="Voltar"/>
+          <ButtonRedirect page="SuppliersList" nameButton="Voltar"/> {/* componente de redirecionar para lista de fornecedor */}
         </Form>
       </FormikProvider>
     </>

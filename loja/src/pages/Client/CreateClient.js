@@ -9,7 +9,7 @@ import Create from '../../components/Create';
 function CreateClient() {
   const navigate = useNavigate();
 
-  const RegisterSchema = Yup.object().shape({
+  const RegisterSchema = Yup.object().shape({// aqui e onde fica a validaçao do formulario.
             
     name: Yup.string()
       .min(2, 'Muito curto!')
@@ -47,7 +47,7 @@ function CreateClient() {
       .required('CPF obrigadorio')
   });
 
-  const formik = useFormik({
+  const formik = useFormik({//aqui fica o valor inicial do formulário
     initialValues: {
       name: '',
       email: '',
@@ -70,7 +70,7 @@ function CreateClient() {
         sex: values.sex,
         cpf: values.cpf
       };
-      const settings = {
+      const settings = {//aqui é onde vai subir o formulário já validado para o back-end.
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -83,7 +83,7 @@ function CreateClient() {
         const fetchResponse = await fetch('http://localhost:3001/client', settings);
         if (fetchResponse.status === 201) {
           formik.setFieldValue("name", null);
-          navigate('/ClientList', { replace: true });
+          navigate('/ClientList', { replace: true });//aqui é onde vai redirecionar para página de listar clientes, quando os dados subirem para o back end corretamente
         }
       } catch (e) {
         console.error(e);
@@ -94,11 +94,11 @@ function CreateClient() {
  
   const { errors, touched, handleSubmit, getFieldProps } = formik;
 
-  return (
+  return (//aqui fica os campos do formulário
     <>
       <FormikProvider value={formik}>
         <Form autoComplete='off' noValidate onSubmit={handleSubmit}>
-        <Create name="Cliente"/>
+         <Create name="Cliente"/>{/*componente de título e texto */}
 
           <div>
             <input
@@ -172,7 +172,7 @@ function CreateClient() {
 
           <div>{touched.category && errors.category}</div>
           <button type='submit'  >Cadastrar novo cliente</button>
-          <ButtonRedirect page="ClientList" nameButton="Voltar"/>
+          <ButtonRedirect page="ClientList" nameButton="Voltar"/>{/* componente de redirecionar para lista de clientes */}
         </Form>
       </FormikProvider>
     </>

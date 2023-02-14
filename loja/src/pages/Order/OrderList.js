@@ -10,18 +10,18 @@ function OrderList() {
     const navigate = useNavigate();
     const [refreshPage, setRefreshPage] = useState('');
 
-    const redirect = (item) => {
+    const redirect = (item) => {//funçao de redirecionar para a página de atualizar pedido passando o objeto de item
         navigate('/UpdateOrder', { replace: false, state: { item: item } });//
     }
 
-    useEffect(() => {
+    useEffect(() => {//buscando pedido e adicionando no state itens
         async function fetchMyAPI() {
             let response = await fetch("http://localhost:3001/order")
             const body = await response.json()
             setItens(body.orders)
         }
         fetchMyAPI()
-    }, [refreshPage]);
+    }, [refreshPage]);//aqui fica escutando caso a funçao deletar pedido seja chamada, no caso mudaria o valor.
 
     async function deletarCategoria(id) {
         let result = await fetch("http://localhost:3001/order/" + id, {
@@ -33,13 +33,14 @@ function OrderList() {
         });
         result = await result.json();
         console.warn(result);
-        setRefreshPage(result);
+        setRefreshPage(result);// adicionando o resultado em refreshPage para carregar a página toda vez que for adicionado esse valo no refreshPage
+    
     };
 
     return (
         <div>
             <List nome="Pedidos" />
-            <table style={{ border: "1px solid" }}>
+            <table style={{ border: "1px solid" }}>{/* Criando tabela de pedidos */}
                 <tbody>
                     <tr>
                         <td align='center'>Clientes</td>
@@ -49,8 +50,7 @@ function OrderList() {
                         <td align='center'>Atualizar</td>
                         <td align='center'>Deletar</td>
                     </tr>
-                    {itens.map(item => {
-
+                    {itens.map(item => {//fazendo o map do array itens para lista todos os campos
                         return <tr key={item._id} style={{ border: "1px solid" }}>
                             <td style={{ border: "1px solid" }}>{item.client.map(nomeCliente => nomeCliente.name)}</td>
                             <td style={{ border: "1px solid" }}>{item.products.map(io => io.suppliers.map(ae => ae.ProductName))}</td>

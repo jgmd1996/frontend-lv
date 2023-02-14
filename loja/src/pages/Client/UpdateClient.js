@@ -7,10 +7,9 @@ import ButtonRedirect from '../../components/ButtonRedirect';
 function UpdateClient() {
 
   const navigate = useNavigate();
-  const {state} = useLocation();
+  const {state} = useLocation();//aqui é o objeto que vem do listar quando é chamado a funçao de atualizar
   
-  
-  const RegisterSchema = Yup.object().shape({
+  const RegisterSchema = Yup.object().shape({// aqui é onde fica a validação do formulário.
     name: Yup.string()
     .min(2, 'Muito curto!')
     .max(200, 'Muito grande!')
@@ -47,7 +46,7 @@ function UpdateClient() {
     .required('CPF obrigadorio')
   });
 
-const formik = useFormik({
+const formik = useFormik({//aqui fica o valor inicial do formulário com o state que veio do listar
   initialValues: {
     id: state.item._id,
     name: state.item.name,
@@ -65,14 +64,14 @@ const formik = useFormik({
         id: values.id,
         name: values.name,
         email: values.email,
-        telephone: values.telephone+"",
+        telephone: values.telephone+"",//aqui tenho que transformar de número para string
         address: values.address,
-        dateOfBirth: values.dateOfBirth+"",
+        dateOfBirth: values.dateOfBirth+"",//aqui tenho que transformar de número para string
         sex: values.sex,
-        cpf: values.cpf+""
+        cpf: values.cpf+""//aqui tenho que trasforma de número para string
 
      }
-    const settings = {
+    const settings = {//aqui é onde vai subir o formulário já validado para o back-end.
       method: 'put',
       headers: {
         'Content-Type': 'application/json',
@@ -84,7 +83,7 @@ const formik = useFormik({
       const fetchResponse = await fetch('http://localhost:3001/client/',settings);  
       if (fetchResponse.status === 200) {
         formik.setFieldValue("name", null);
-        navigate('/ClientList', { replace: true });
+        navigate('/ClientList', { replace: true });//aqui é onde vai redirecionar para a página de listar clientes, quando os dados subirem para o back end corretamente
       }
     } catch (e) {
       console.error(e);
@@ -94,11 +93,11 @@ const formik = useFormik({
 
 const { errors, touched, handleSubmit, getFieldProps } = formik;
 
-  return (
+  return (//aqui fica os campos do formulário
     <>
       <FormikProvider value={formik}>
         <Form autoComplete='off' noValidate onSubmit={handleSubmit}>
-        <Update name="Cliente" />
+        <Update name="Cliente" />{/*componente de título e texto */}
         <div>
             <input
               type="text"
@@ -171,7 +170,7 @@ const { errors, touched, handleSubmit, getFieldProps } = formik;
           
 
           <button type='submit'  >Atualizar cliente</button>
-          <ButtonRedirect page="ClientList" nameButton="Voltar"/>
+          <ButtonRedirect page="ClientList" nameButton="Voltar"/>{/* componete de redirecionar para lista de clientes */}
         </Form>
       </FormikProvider>
     </>

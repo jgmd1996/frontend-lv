@@ -7,11 +7,11 @@ import List from '../../components/List';
 
 function SuppliersList() {
 
-    const [itens, setItens] = useState([]);
+    const [itens, setItens] = useState([]);//funçao de redirecionar para a página de atualizar fornecedor passando o objeto de item
     const navigate = useNavigate();
     const [refreshPage, setRefreshPage] = useState('');
 
-    const redirect = (item) => {
+    const redirect = (item) => {//buscando fornecedor e adicionando no state itens
         navigate('/UpdateSuppliers', { replace: false, state: { item: item } });//
     }
 
@@ -22,9 +22,9 @@ function SuppliersList() {
             setItens(body.supplierss)
         }
         fetchMyAPI()
-    }, [refreshPage]);
+    }, [refreshPage]);//aqui fica escutando caso a funçao deletar fornecedor seja chamada, no caso mudaria o valor.
 
-    async function deleteSuppliers(id) {
+    async function deleteSuppliers(id) {// deletando fornecedor passando o id selecionando no itns do map
         let result = await fetch("http://localhost:3001/suppliers/" + id, {
             method: 'DELETE',
             headers: {
@@ -34,13 +34,13 @@ function SuppliersList() {
         });
         result = await result.json();
         console.warn(result);
-        setRefreshPage(result);
+        setRefreshPage(result);// adicionando o resultado em refreshPage para carregar a página toda vez que for adicionado esse valo no refreshPage
     };
 
     return (
         <div>
              <List nome="Fornecedores" />
-            <table style={{ border: "1px solid" }}>
+            <table style={{ border: "1px solid" }}>{/* Criando tabela de fornecedor */}
                 <tbody>
                     <tr>
                         <td align='center'>Denominação social</td>
@@ -60,7 +60,7 @@ function SuppliersList() {
                         <td align='center'>Deletar</td>
                         
                     </tr>
-                    {itens.map(item => {
+                    {itens.map(item => {//fazendo o map do array itens para lista todos os campos
 
                         return <tr key={item._id} style={{ border: "1px solid" }}>
                             <td style={{ border: "1px solid" }}>{item.socialDenomination}</td>
@@ -83,8 +83,8 @@ function SuppliersList() {
                     })}
                 </tbody>
             </table>
-            <ButtonRedirect page="" nameButton="Voltar para home"/>
-            <ButtonRedirect page="CreateSuppliers" nameButton="Cadastrar novo Fornecedor"/>
+            <ButtonRedirect page="" nameButton="Voltar para home"/>{/* compoente de redirecionar */}
+            <ButtonRedirect page="CreateSuppliers" nameButton="Cadastrar novo Fornecedor"/>{/* compoente de redirecionar */}
         </div>
 
 

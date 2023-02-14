@@ -19,7 +19,7 @@ function CreateOrder() {
     async function fetchMyAPI() {
       let response = await fetch("http://localhost:3001/product");
       const body = await response.json();
-      const productsSelect = body.products.map(productsApi => ({ value: productsApi._id, label: productsApi.suppliers.map(ae => ae.ProductName) }));
+      const productsSelect = body.products.map(productsApi => ({ value: productsApi._id, label: productsApi.suppliers.map(ae => ae.ProductName) }));//tranformando id em value enome do fornecedor em label com map pra poder selecionar no formulario
       setProduct(productsSelect);
     }
     fetchMyAPI();
@@ -38,7 +38,7 @@ function CreateOrder() {
    async function fetchMyAPI() {
      let response = await fetch("http://localhost:3001/client");
      const body = await response.json();
-     const clientsSelect = body.clients.map(clientsApi => ({ value: clientsApi._id,  label: clientsApi.name }));
+     const clientsSelect = body.clients.map(clientsApi => ({ value: clientsApi._id,  label: clientsApi.name }));//trasformando o id do cliente em value e nome em label pra poder selecionar no formulario
      setClient(clientsSelect);
    }
    fetchMyAPI();
@@ -51,7 +51,7 @@ function CreateOrder() {
 
 
 
-  const RegisterSchema = Yup.object().shape({
+  const RegisterSchema = Yup.object().shape({// aqui e onde fica a validaçao do formulario.
       description: Yup.string()
       .min(2, 'Muito curto!')
       .max(200, 'Muito grande!')
@@ -71,7 +71,7 @@ function CreateOrder() {
       .required('Cliente obrigatório!')
   })
 
-  const formik = useFormik({
+  const formik = useFormik({//aqui fica o valor inicial do formulário
     initialValues: {
       description: '',
       amount: '',
@@ -84,10 +84,10 @@ function CreateOrder() {
       const body = {
         description: values.description,
         amount: values.amount+"",
-        products: selectedProduct.map(id => ({ _id: id.value })),
-        client: selectedClient.map(id => ({ _id: id.value }))
+        products: selectedProduct.map(id => ({ _id: id.value })),//mando somente o id de fornecedor ao subir o formulario
+        client: selectedClient.map(id => ({ _id: id.value }))//mando somente o id de fornecedor ao subir o formulario
       }
-      const settings = {
+      const settings = {//aqui é onde vai subir o formulário já validado para o back-end.
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -99,7 +99,7 @@ function CreateOrder() {
         const fetchResponse = await fetch('http://localhost:3001/order', settings);
         if (fetchResponse.status === 201) {
           formik.setFieldValue("name", null);
-          navigate('/OrderList', { replace: true });
+          navigate('/OrderList', { replace: true });//aqui é onde vai redirecionar para página de listar pedido, quando os dados subirem para o back end corretamente
         };
       } catch (e) {
         console.error(e);
@@ -109,12 +109,14 @@ function CreateOrder() {
 
   const { errors, touched, handleSubmit, getFieldProps } = formik;
 
-  return (
+  return (//aqui fica os campos do formulário
     <>
       <FormikProvider value={formik}>
         <Form autoComplete='off' noValidate onSubmit={handleSubmit}>
-        <Create name="Pedido"/>
+        <Create name="Pedido"/>{/*componente de título e texto */}
+
         <div>
+          {/*aqui seleciono os produtos que busquei do back end e trasformei em value e label */}
             <Select
               components={animatedComponents}
               placeholder="Selecione o produto"
@@ -133,6 +135,7 @@ function CreateOrder() {
           </div>
 
           <div>
+            {/*aqui seleciono os produtos que busquei do back end e trasformei em value e label */}
             <Select
               components={animatedComponents}
               placeholder="Selecione o cliente"
@@ -173,7 +176,7 @@ function CreateOrder() {
          
 
           <button type='submit'>Criar novo pedido</button>
-          <ButtonRedirect page="OrderList" nameButton="Voltar"/>
+          <ButtonRedirect page="OrderList" nameButton="Voltar"/>{/* componente de redirecionar para lista de pedidos */}
         </Form>
       </FormikProvider>
     </>

@@ -16,3 +16,6 @@ function List(props) {
 }
 
 export default List;
+
+
+//componente que uso e todas as paginas de lista com titulo e um pequeno texto podendo adicinar mais coisas futuramente

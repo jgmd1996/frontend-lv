@@ -6,9 +6,9 @@ import Update from '../../components/Update';
 
 function UpdateSuppliers() {
   const navigate = useNavigate();
-  const { state } = useLocation();
+  const { state } = useLocation();//aqui é o objeto que vem do listar quando é chamado a funçao de atualizar
 
-  const RegisterSchema = Yup.object().shape({
+  const RegisterSchema = Yup.object().shape({// aqui é onde fica a validação do formulário.
     socialDenomination: Yup.string()
     .min(2, 'Muito curto!')
     .max(200, 'Muito grande!')
@@ -75,7 +75,7 @@ function UpdateSuppliers() {
     .required('Preço do produto obrigatório!'),
   });
 
-  const formik = useFormik({
+  const formik = useFormik({//aqui fica o valor inicial do formulário com o state que veio do listar
     initialValues: {
       id: state.item._id,
       socialDenomination: state.item.socialDenomination,
@@ -102,16 +102,16 @@ function UpdateSuppliers() {
         neighborhood: values.neighborhood,
         city: values.city,
         uf: values.uf,
-        telephone: values.telephone+ "",
-        zipCode: values.zipCode+ "",
+        telephone: values.telephone+ "",//aqui tenho que transformar de número para string
+        zipCode: values.zipCode+ "",//aqui tenho que transformar de número para string
         email: values.email,
-        cnpj: values.cnpj+ "",
+        cnpj: values.cnpj+ "",//aqui tenho que transformar de número para string
         lineOfBusinesscontact: values.lineOfBusinesscontact,
         functions: values.functions,
         ProductName: values.ProductName,
-        price: values.price+ ""
+        price: values.price+ ""//aqui tenho que transformar de número para string
       }
-      const settings = {
+      const settings = {//aqui é onde vai subir o formulário já validado para o back-end.
         method: 'put',
         headers: {
           'Content-Type': 'application/json',
@@ -123,7 +123,7 @@ function UpdateSuppliers() {
         const fetchResponse = await fetch('http://localhost:3001/suppliers/', settings);
         if (fetchResponse.status === 200) {
           formik.setFieldValue("name", null);
-          navigate('/SuppliersList', { replace: true });
+          navigate('/SuppliersList', { replace: true });//aqui é onde vai redirecionar para a página de listar fornecedor, quando os dados subirem para o back end corretamente
         }
       } catch (e) {
         console.error(e);
@@ -133,11 +133,11 @@ function UpdateSuppliers() {
 
   const { errors, touched, handleSubmit, getFieldProps } = formik;
 
-  return (
+  return (//aqui fica os campos do formulário
     <>
       <FormikProvider value={formik}>
         <Form autoComplete='off' noValidate onSubmit={handleSubmit}>
-        <Update name="Fornecedor" />
+        <Update name="Fornecedor" />{/*componente de título e texto */}
           <div>
             <input
               type="text"
@@ -269,7 +269,7 @@ function UpdateSuppliers() {
           </div>
           <button type='submit'  >Atualizar Fornecedor</button>
           
-          <ButtonRedirect page="SuppliersList" nameButton="Voltar"/>
+          <ButtonRedirect page="SuppliersList" nameButton="Voltar"/>{/* componete de redirecionar para lista de fornecedores */}
         </Form>
       </FormikProvider>
     </>

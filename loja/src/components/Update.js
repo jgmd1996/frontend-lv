@@ -15,3 +15,5 @@ function Update(props) {
 }
 
 export default Update;
+
+//componente que uso e todas as paginas de atualizar com titulo e um pequeno texto podendo adicinar mais coisas futuramente

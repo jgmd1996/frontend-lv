@@ -11,20 +11,20 @@ function ClientList() {
     const navigate = useNavigate();
     const [refreshPage, setRefreshPage] = useState('');
 
-    const redirect = (item) => {
+    const redirect = (item) => {//funçao de redirecionar para a página de atualizar cliente passando o objeto de item
         navigate('/Updateclient', { replace: false, state: { item: item } });//
     }
 
-    useEffect(() => {
+    useEffect(() => {//buscando cliente e adicionando no state itens
         async function fetchMyAPI() {
             let response = await fetch("http://localhost:3001/client")
             const body = await response.json()
             setItens(body.clients)
         }
         fetchMyAPI()
-    }, [refreshPage]);
+    }, [refreshPage]);//aqui fica escutando caso a funçao deletar cliente seja chamada, no caso mudaria o valor.
 
-    async function deletarCategoria(id) {
+    async function deleteClient(id) {// deletando cliente passando o id selecionando no itns do map
         let result = await fetch("http://localhost:3001/client/" + id, {
             method: 'DELETE',
             headers: {
@@ -33,13 +33,13 @@ function ClientList() {
             }
         });
         result = await result.json();
-        setRefreshPage(result);
+        setRefreshPage(result);// adicionando o resultado em refreshPage para carregar a página toda vez que for adicionado esse valo no refreshPage
     };
 
     return (
         <div>
             <List nome="Clientes"/>
-            <table style={{ border: "1px solid" }}>
+            <table style={{ border: "1px solid" }}>{/* Criando tabela de cliente */}
                 <tbody>
                     <tr>
                         <td align='center'>Nome</td>
@@ -52,7 +52,7 @@ function ClientList() {
                         <td align='center'>Atualizar</td>
                         <td align='center'>Deletar</td>
                     </tr>
-                    {itens.map(item => {
+                    {itens.map(item => {//fazendo o map do array itens para lista todos os campos
 
                         return <tr key={item._id} style={{ border: "1px solid" }}>
                             <td style={{ border: "1px solid" }}>{item.name}</td>
@@ -63,14 +63,14 @@ function ClientList() {
                             <td style={{ border: "1px solid" }}>{item.sex}</td>
                             <td style={{ border: "1px solid" }}>{item.cpf}</td>
                             <td style={{ border: "1px solid" }}><button onClick={() => redirect(item)}>Atualizar</button> </td>
-                            <td style={{ border: "1px solid" }}><button onClick={() => deletarCategoria(item._id)}>Deletar</button> </td>
+                            <td style={{ border: "1px solid" }}><button onClick={() => deleteClient(item._id)}>Deletar</button> </td>
 
                         </tr>
                     })}
                 </tbody>
             </table>
-            <ButtonRedirect page="" nameButton="Voltar para home"/>
-            <ButtonRedirect page="CreateClient" nameButton="Cadastrar novo cliente"/>
+            <ButtonRedirect page="" nameButton="Voltar para home"/>{/* compoente de redirecionar */}
+            <ButtonRedirect page="CreateClient" nameButton="Cadastrar novo cliente"/>{/* compoente de redirecionar */}
         </div>
 
 
