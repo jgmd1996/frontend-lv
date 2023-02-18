@@ -68,3 +68,12 @@ This section has moved here: [https://facebook.github.io/create-react-app/docs/d
 ### `npm run build` fails to minify
 
 This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+
+
+
+<!-- challenge
+
+Create a system for a small virtual store, the owner wants to save the information of his product suppliers, each product will have only one supplier, he also wants to save the information of each order, which can contain several products in the same order. In order to carry out his marketing campaigns in the future, he also wants to store information from customers who have already placed orders in his virtual store. He would also like to know which products are most present in orders, that is, list the orders in which each product is present.
+
+Technical requirements: the system must be created using the MERN stack (Mongo, Express, React and Node), the source code stored on Github with information on how the system should be executed: commands, etc. For each table created in the generated data model, all CRUD operations (Create, Read, Update and Delete) must be available in the system. Both the backend and frontend must validate the information entered by the user. The entire code implementation must be in English, but the frontend must show in Portuguese. -->
+

@@ -18,6 +18,7 @@ function CreateClient() {
 
       email: Yup.string()
       .min(1, 'Muito curto!')
+      .email('O e-mail deve ser válido! ')
       .max(500, 'Muito grande!')
       .required('E-mail obrigatório !'),
 
@@ -101,6 +102,7 @@ function CreateClient() {
          <Create name="Cliente"/>{/*componente de título e texto */}
 
           <div>
+          <label>Nome:</label>
             <input
               type="text"
               id="name"
@@ -111,8 +113,9 @@ function CreateClient() {
           </div>
 
           <div>
+          <label>Nome:</label>
             <input
-              type="text"
+              type='email'
               id="email"
               placeholder="Digite o E-mail"
               {...getFieldProps('email')}
@@ -121,6 +124,7 @@ function CreateClient() {
           </div>
 
           <div>
+          <label>Nome:</label>
             <input
               type="text"
               id="telephone"
@@ -131,6 +135,7 @@ function CreateClient() {
           </div>
 
           <div>
+          <label>Nome:</label>
             <input
               type="text"
               id="address"
@@ -141,6 +146,7 @@ function CreateClient() {
           </div>
 
           <div>
+          <label>Nome:</label>
             <input
               type="number"
               id="dateOfBirth"
@@ -151,6 +157,7 @@ function CreateClient() {
           </div>
 
           <div>
+          <label>Nome:</label>
             <input
               type="text"
               id="sex"
@@ -161,6 +168,7 @@ function CreateClient() {
           </div>
 
           <div>
+          <label>Nome:</label>
             <input
               type="text"
               id="cpf"
