@@ -14,5 +14,3 @@ function ButtonRedirect(props) {
 }
 
 export default ButtonRedirect;
-
-//Aqui e um compoente que vo usar em todas as paginas passando o endereço da url no navigate com props e o nome da pagina tambem link n da pra fazser pq ele adicina mais espaço na url sendo nessesaio criar mais rotas

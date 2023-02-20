@@ -2,14 +2,13 @@ import { useNavigate } from 'react-router-dom';
 import { Form, FormikProvider, useFormik } from 'formik';
 import * as Yup from "yup";
 import React from 'react';
-import "./style.css";
 import ButtonRedirect from '../../components/ButtonRedirect';
 import Create from '../../components/Create';
 
 function CreateSuppliers() {
   const navigate = useNavigate();
 
-  const RegisterSchema = Yup.object().shape({// aqui e onde fica a validaçao do formulario.
+  const RegisterSchema = Yup.object().shape({
     socialDenomination: Yup.string()
       .min(2, 'Muito curto!')
       .max(200, 'Muito grande!')
@@ -46,9 +45,10 @@ function CreateSuppliers() {
       .required('CEP obrigatório!'),
 
       email: Yup.string()
-      .min(2, 'Muito curto!')
-      .max(200, 'Muito grande!')
-      .required('E-mail obrigatório!'),
+      .min(1, 'Muito curto!')
+      .email('O e-mail deve ser válido! ')
+      .max(500, 'Muito grande!')
+      .required('E-mail obrigatório !'),
 
       cnpj: Yup.number()
       .min(10000000000000, 'Muito curto!')
@@ -64,19 +64,13 @@ function CreateSuppliers() {
       .min(2, 'Muito curto!')
       .max(200, 'Muito grande!')
       .required('Função obrigatório!'),
-
-      ProductName: Yup.string()
-      .min(2, 'Muito curto!')
-      .max(200, 'Muito grande!')
-      .required('Name do produto obrigatório!'),
-
       price: Yup.number()
       .min(1, 'Muito curto!')
       .max(1000, 'Muito grande!')
       .required('Preço do produto obrigatório!'),
   });
 
-  const formik = useFormik({//aqui fica o valor inicial do formulário
+  const formik = useFormik({
     initialValues: {
       socialDenomination: '',
       address: '',
@@ -89,7 +83,6 @@ function CreateSuppliers() {
       cnpj: '',
       lineOfBusinesscontact: '',
       functions: '',
-      ProductName: '',
       price: '',
       
     },
@@ -109,11 +102,10 @@ function CreateSuppliers() {
         cnpj: values.cnpj + "",
         lineOfBusinesscontact: values.lineOfBusinesscontact,
         functions: values.functions,
-        ProductName: values.ProductName,
         price: values.price + "",
         
       };
-      const settings = {//aqui é onde vai subir o formulário já validado para o back-end.
+      const settings = {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -127,7 +119,7 @@ function CreateSuppliers() {
         const fetchResponse = await fetch('http://localhost:3001/suppliers', settings);
         if (fetchResponse.status === 201) {
           formik.setFieldValue("name", null);
-          navigate('/SuppliersList', { replace: true });//aqui é onde vai redirecionar para página de listar fornecedor, quando os dados subirem para o back end corretamente
+          navigate('/SuppliersList', { replace: true });
         }
       } catch (e) {
         console.error(e);
@@ -137,13 +129,14 @@ function CreateSuppliers() {
 
   const { errors, touched, handleSubmit, getFieldProps } = formik;
 
-  return (//aqui fica os campos do formulário
+  return (
     <>
       <FormikProvider value={formik}>
         <Form autoComplete='off' noValidate onSubmit={handleSubmit}>
-        <Create name="Fornecedor"/>{/*componente de título e texto */}
+        <Create name="Fornecedor"/>
 
           <div>
+          <label>Denominação social:</label><br/>
             <input
               type="text"
               id="socialDenomination"
@@ -154,6 +147,7 @@ function CreateSuppliers() {
           </div>
 
           <div>
+          <label>Endereço:</label><br/>
             <input
               type="text"
               id="address"
@@ -164,6 +158,7 @@ function CreateSuppliers() {
           </div>
 
           <div>
+          <label>Bairro:</label><br/>
             <input
               type="text"
               id="neighborhood"
@@ -174,6 +169,7 @@ function CreateSuppliers() {
           </div>
 
           <div>
+          <label>Cidade:</label><br/>
             <input
               type="text"
               id="city"
@@ -184,6 +180,7 @@ function CreateSuppliers() {
           </div>
 
           <div>
+          <label>UF:</label><br/>
             <input
               type="text"
               id="uf"
@@ -194,6 +191,7 @@ function CreateSuppliers() {
           </div>
 
           <div>
+          <label>Telefone:</label><br/>
             <input
               type="number"
               id="telephone"
@@ -204,6 +202,7 @@ function CreateSuppliers() {
           </div>
 
           <div>
+          <label>CEP:</label><br/>
             <input
               type="number"
               id="zipCode"
@@ -214,16 +213,18 @@ function CreateSuppliers() {
           </div>
 
           <div>
+          <label>E-mail:</label><br/>
             <input
-              type="text"
+              type='email'
               id="email"
-              placeholder="Digite o E-mail da empresa"
+              placeholder="Digite o E-mail"
               {...getFieldProps('email')}
             />
             <div>{touched.email && errors.email}</div>
           </div>
 
           <div>
+          <label>CNPJ:</label><br/>
             <input
               type="number"
               id="cnpj"
@@ -234,6 +235,7 @@ function CreateSuppliers() {
           </div>
 
           <div>
+          <label>Linha de negócios:</label><br/>
             <input
               type="text"
               id="lineOfBusinesscontact"
@@ -244,6 +246,7 @@ function CreateSuppliers() {
           </div>
 
           <div>
+          <label>Função:</label><br/>
             <input
               type="text"
               id="functions"
@@ -252,18 +255,8 @@ function CreateSuppliers() {
             />
             <div>{touched.functions && errors.functions}</div>
           </div>
-
           <div>
-            <input
-              type="text"
-              id="ProductName"
-              placeholder="Digite o name do produto"
-              {...getFieldProps('ProductName')}
-            />
-            <div>{touched.ProductName && errors.ProductName}</div>
-          </div>
-
-          <div>
+          <label>Preço:</label><br/>
             <input
               type="number"
               id="price"
@@ -272,12 +265,9 @@ function CreateSuppliers() {
             />
             <div>{touched.price && errors.price}</div>
           </div>
-
-          
-
           <div>{touched.category && errors.category}</div>
           <button type='submit'>Criar Fornecedor</button>
-          <ButtonRedirect page="SuppliersList" nameButton="Voltar"/> {/* componente de redirecionar para lista de fornecedor */}
+          <ButtonRedirect page="SuppliersList" nameButton="Voltar"/> 
         </Form>
       </FormikProvider>
     </>

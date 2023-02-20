@@ -3,28 +3,27 @@ import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom';
 import ButtonRedirect from '../../components/ButtonRedirect';
 import List from '../../components/List';
-import "./style.css";
 
 function ClientList() {
 
-    const [itens, setItens] = useState([]);
+    const [items, setItems] = useState([]);
     const navigate = useNavigate();
     const [refreshPage, setRefreshPage] = useState('');
 
-    const redirect = (item) => {//funçao de redirecionar para a página de atualizar cliente passando o objeto de item
+    const redirect = (item) => {
         navigate('/Updateclient', { replace: false, state: { item: item } });//
     }
 
-    useEffect(() => {//buscando cliente e adicionando no state itens
+    useEffect(() => {
         async function fetchMyAPI() {
             let response = await fetch("http://localhost:3001/client")
             const body = await response.json()
-            setItens(body.clients)
+            setItems(body.clients)
         }
         fetchMyAPI()
-    }, [refreshPage]);//aqui fica escutando caso a funçao deletar cliente seja chamada, no caso mudaria o valor.
+    }, [refreshPage]);
 
-    async function deleteClient(id) {// deletando cliente passando o id selecionando no itns do map
+    async function deleteClient(id) {
         let result = await fetch("http://localhost:3001/client/" + id, {
             method: 'DELETE',
             headers: {
@@ -33,18 +32,18 @@ function ClientList() {
             }
         });
         result = await result.json();
-        setRefreshPage(result);// adicionando o resultado em refreshPage para carregar a página toda vez que for adicionado esse valo no refreshPage
+        setRefreshPage(result);
     };
 
     return (
         <div>
             <List nome="Clientes"/>
-            <table style={{ border: "1px solid" }}>{/* Criando tabela de cliente */}
+            <table style={{ border: "1px solid" }}>
                 <tbody>
                     <tr>
                         <td align='center'>Nome</td>
                         <td align='center'>E-mail</td>
-                        <td align='center'>Numero</td>
+                        <td align='center'>Número</td>
                         <td align='center'>Endereço</td>
                         <td align='center'>Data de nascimento</td>  
                         <td align='center'>Sexo</td>
@@ -52,7 +51,7 @@ function ClientList() {
                         <td align='center'>Atualizar</td>
                         <td align='center'>Deletar</td>
                     </tr>
-                    {itens.map(item => {//fazendo o map do array itens para lista todos os campos
+                    {items.map(item => {
 
                         return <tr key={item._id} style={{ border: "1px solid" }}>
                             <td style={{ border: "1px solid" }}>{item.name}</td>
@@ -69,8 +68,8 @@ function ClientList() {
                     })}
                 </tbody>
             </table>
-            <ButtonRedirect page="" nameButton="Voltar para home"/>{/* compoente de redirecionar */}
-            <ButtonRedirect page="CreateClient" nameButton="Cadastrar novo cliente"/>{/* compoente de redirecionar */}
+            <ButtonRedirect page="" nameButton="Voltar para home"/>
+            <ButtonRedirect page="CreateClient" nameButton="Cadastrar novo cliente"/>
         </div>
 
 

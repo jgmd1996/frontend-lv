@@ -6,23 +6,26 @@ import Select from "react-select";
 import makeAnimated from "react-select/animated";
 import Update from '../../components/Update';
 import ButtonRedirect from '../../components/ButtonRedirect';
+import {
+  MenuItem,
+  TextField,
+} from '@material-ui/core';
 
 function UpdateOrder() {
 
   const navigate = useNavigate();
-  const { state } = useLocation();//aqui é o objeto que vem do listar quando é chamado a funçao de atualizar
+  const { state } = useLocation();
   const animatedComponents = makeAnimated();
 
-  //selecionar e buscar clientes
   const [clientss, setClientss] = useState([]);
-  const stateGender = state.item.client.map(clientsh => ({ value: clientsh._id, label: clientsh.name }));//trasformando id em value e nome do produto em label dos cliente
+  const stateGender = state.item.client.map(clientsh => ({ value: clientsh._id, label: clientsh.name }));
   const [selectedClients, setSelectedClients] = useState(stateGender);
 
   useEffect(() => {
     async function fetchMyAPI() {
       let response = await fetch("http://localhost:3001/client");
       const body = await response.json();
-      const clientssSelect = body.clients.map(clientsApi => ({ value: clientsApi._id, label: clientsApi.name }));//trasformando o id do cliente em value e nome do cliente em label pra poder selecionar no formulario
+      const clientssSelect = body.clients.map(clientsApi => ({ value: clientsApi._id, label: clientsApi.name }));
       setClientss(clientssSelect);
     }
     fetchMyAPI();
@@ -31,108 +34,107 @@ function UpdateOrder() {
   useEffect(() => {
     formik.setFieldValue("client", selectedClients)
   }, [selectedClients]);
-///////////////////////////////////////////////////////////////////
 
-//selecionar e buscar produtos
-const [productss, setProductss] = useState([]);
-const stateProduct = state.item.products.map(productsh => ({ value: productsh._id, label: productsh.suppliers.map(ae => ae.ProductName) }));//trasformando id em value e nome do produto em label dos produtos
-const [selectedProducts, setSelectedProducts] = useState(stateProduct);
+  const [productss, setProductss] = useState([]);
+  const stateProduct = state.item.products.map(productsh => ({ value: productsh._id, label: productsh.name }));
+  const [selectedProducts, setSelectedProducts] = useState(stateProduct);
 
-useEffect(() => {
-  async function fetchMyAPI() {
-    let response = await fetch("http://localhost:3001/product");
-    const body = await response.json();
-    const productsSelect = body.products.map(productsApi => ({ value: productsApi._id, label: productsApi.suppliers.map(ae => ae.ProductName) }));//trasformando o id do produto em value e nome do fornecedor em label pra poder selecionar no formulario
-    setProductss(productsSelect);
-  }
-  fetchMyAPI();
-}, []);
+  useEffect(() => {
+    async function fetchMyAPI() {
+      let response = await fetch("http://localhost:3001/product");
+      const body = await response.json();
+      const productsSelect = body.product.map(productsApi => ({ value: productsApi._id, label: productsApi.name }));
+      setProductss(productsSelect);
+    }
+    fetchMyAPI();
+  }, []);
 
-useEffect(() => {
-  formik.setFieldValue("products", selectedProducts)
-}, [selectedProducts]);
-//
+  useEffect(() => {
+    formik.setFieldValue("products", selectedProducts)
+  }, [selectedProducts]);
 
+  console.log("status", state)
 
-
-  const RegisterSchema = Yup.object().shape({// aqui é onde fica a validação do formulário.
+  const RegisterSchema = Yup.object().shape({
     description: Yup.string()
       .min(2, 'Descrição muito curto!')
       .max(200, 'Muito grande!')
       .required('Descrição obrigatório!'),
-      amount: Yup.number()
-      .min(1, 'Quantidade muito curto!')
-      .max(1000, 'Valor maximo 1000!')
-      .required('Quantidade obrigatório!'),
-      products: Yup.array()
+    paymentMethod: Yup.string()
+      .required('Forma de pagamento obrigatório!'),
+    delivery: Yup.string()
+      .required('Forma de entrega obrigatório!'),
+    products: Yup.array()
       .nullable(true)
       .min(1, 'Muito curto!')
       .required('Produto obrigatório!'),
-      client: Yup.array()
+    client: Yup.array()
       .nullable(true)
       .min(1, 'Muito curto!')
       .max(1, 'No maximo um produto!')
       .required('Cliente obrigatório!')
   });
 
-  const formik = useFormik({//aqui fica o valor inicial do formulário com o state que veio do listar
+  const formik = useFormik({
     initialValues: {
       id: state.item._id,
       description: state.item.description,
-      amount: state.item.amount,
-      client: state.item.client.map(clientsApi => ({ value: clientsApi._id, label: clientsApi.ProductName })),
+      paymentMethod: state.item.paymentMethod,
+      delivery: state.item.delivery,
+      client: state.item.client.map(clientsApi => ({ value: clientsApi._id, label: clientsApi.name })),
       products: state.item.products
     },
     validationSchema: RegisterSchema,
-    
+
     onSubmit: async (values) => {
       const body = {
         id: values.id,
         name: values.name,
         description: values.description,
-        amount: values.amount + "",//aqui tenho que transformar de número para string
-        client: selectedClients.map(id => ({ _id: id.value })),//mando somente o id de cliente ao subir o formulario
-        products: selectedProducts.map(id => ({ _id: id.value }))//mando somente o id de produto ao subir o formulario
+        paymentMethod: values.paymentMethod,
+        delivery: values.delivery,
+        client: selectedClients.map(id => ({ _id: id.value })),
+        products: selectedProducts.map(id => ({ _id: id.value }))
       }
-      const settings = {//aqui é onde vai subir o formulário já validado para o back-end.
+      const settings = {
         method: 'put',
         headers: {
           'Content-Type': 'application/json',
           'Accept': 'application/json',
         },
         body: JSON.stringify(body)
-        
+
       };
-      
+
       try {
         const fetchResponse = await fetch('http://localhost:3001/order/', settings);
         if (fetchResponse.status === 200) {
           formik.setFieldValue("name", null);
-          navigate('/OrderList', { replace: true });//aqui é onde vai redirecionar para a página de listar pedido, quando os dados subirem para o back end corretamente
+          navigate('/OrderList', { replace: true });
         }
       } catch (e) {
         console.error(e);
       }
     }
-    
+
   });
- 
+
 
   const { errors, touched, handleSubmit, getFieldProps } = formik;
 
-  return (//aqui fica os campos do formulário
+  return (
     <>
       <FormikProvider value={formik}>
         <Form autoComplete='off' noValidate onSubmit={handleSubmit}>
-      <Update name="Pedido" />{/*componente de título e texto */}
-        <div>
-          {/*aqui seleciono os produtos que busquei do back ends do state e trasformei em value e label */}
+          <Update name="Pedido" />
+          <div>
+            <label>Selecione os produtos:</label><br />
             <Select
-              defaultValue={stateProduct}//para deixa o valor inicial preenchido
+              defaultValue={stateProduct}
               components={animatedComponents}
               placeholder="Selecione os produtos"
               isMulti
-              options={productss}//opções para selecionar
+              options={productss}
               onChange={(item) => setSelectedProducts(item)}
               className="select"
               isClearable={true}
@@ -146,14 +148,41 @@ useEffect(() => {
             <div>{touched.products && errors.products}</div>
           </div>
 
-        <div>
-           {/*aqui seleciono os produtos que busquei do back ends do state e trasformei em value e label */}
+          <label>Forma de pagamento:</label><br />
+          <TextField
+            select
+            label='selecione'
+            fullWidth
+            {...getFieldProps('paymentMethod')}
+            error={Boolean(touched.paymentMethod && errors.paymentMethod)}
+            helperText={touched.paymentMethod && errors.paymentMethod}
+          >
+            <MenuItem value='Boleto'>Boleto</MenuItem>
+            <MenuItem value='Cartão'>Cartão</MenuItem>
+            <MenuItem value='Pix'>pix</MenuItem>
+          </TextField>
+          
+          <label>Forma de Entrega:</label><br />
+          <TextField
+            select
+            label='selecione'
+            fullWidth
+            {...getFieldProps('delivery')}
+            error={Boolean(touched.delivery && errors.delivery)}
+            helperText={touched.delivery && errors.delivery}
+          >
+            <MenuItem value='Expresso'>Expresso</MenuItem>
+            <MenuItem value='Padrão'>Padrão</MenuItem>
+          </TextField>
+
+          <div>
+            <label>Selecione o cliente:</label><br />
             <Select
-              defaultValue={stateGender}//para deixa o valor inicial preenchido
+              defaultValue={stateGender}
               components={animatedComponents}
               placeholder="Selecione os clientes"
-              isMulti
-              options={clientss}//opções para selecionar
+              select
+              options={clientss}
               onChange={(item) => setSelectedClients(item)}
               className="select"
               isClearable={true}
@@ -168,6 +197,7 @@ useEffect(() => {
           </div>
 
           <div>
+            <label>Descrição do produto:</label><br />
             <input
               type="text"
               id="description"
@@ -177,21 +207,8 @@ useEffect(() => {
             <div>{touched.description && errors.description}</div>
           </div>
 
-          <div>
-            <input
-              type="number"
-              id="amount"
-              placeholder="Digite a quantidade"
-              {...getFieldProps('amount')}
-            />
-            <div>{touched.amount && errors.amount}</div>
-          </div>
-
-          
-
           <button type='submit'>Atualizar Pedido</button>
-          
-          <ButtonRedirect page="OrderList" nameButton="Voltar"/>{/* componete de redirecionar para lista de pedidos */}
+          <ButtonRedirect page="OrderList" nameButton="Voltar" />
         </Form>
       </FormikProvider>
     </>

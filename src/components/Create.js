@@ -1,5 +1,4 @@
 import React from 'react';
-//import './App.css';
 
 function Create(props) {
     return (
@@ -16,5 +15,3 @@ function Create(props) {
 }
 
 export default Create;
-
-//componente que uso e todas as paginas de criar com titulo e um pequeno texto podendo adicinar mais coisas futuramente

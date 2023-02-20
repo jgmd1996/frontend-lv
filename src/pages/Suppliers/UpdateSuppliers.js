@@ -6,76 +6,71 @@ import Update from '../../components/Update';
 
 function UpdateSuppliers() {
   const navigate = useNavigate();
-  const { state } = useLocation();//aqui é o objeto que vem do listar quando é chamado a funçao de atualizar
+  const { state } = useLocation();
 
-  const RegisterSchema = Yup.object().shape({// aqui é onde fica a validação do formulário.
+  const RegisterSchema = Yup.object().shape({
     socialDenomination: Yup.string()
-    .min(2, 'Muito curto!')
-    .max(200, 'Muito grande!')
-    .required('Denominação social obrigatório!'),
+      .min(2, 'Muito curto!')
+      .max(200, 'Muito grande!')
+      .required('Denominação social obrigatório!'),
 
-    address: Yup.string()
-    .min(2, 'Muito curto!')
-    .max(200, 'Muito grande!')
-    .required('Endereço da empresa obrigatório!'),
+      address: Yup.string()
+      .min(2, 'Muito curto!')
+      .max(200, 'Muito grande!')
+      .required('Endereço da empresa obrigatório!'),
 
-    neighborhood: Yup.string()
-    .min(2, 'Muito curto!')
-    .max(200, 'Muito grande!')
-    .required('Bairro da empresa obrigatório!'),
+      neighborhood: Yup.string()
+      .min(2, 'Muito curto!')
+      .max(200, 'Muito grande!')
+      .required('Bairro da empresa obrigatório!'),
 
-    city: Yup.string()
-    .min(2, 'Muito curto!')
-    .max(200, 'Muito grande!')
-    .required('Cidade obrigatório!'),
+      city: Yup.string()
+      .min(2, 'Muito curto!')
+      .max(200, 'Muito grande!')
+      .required('Cidade obrigatório!'),
 
-    uf: Yup.string()
-    .min(2, 'Muito curto!')
-    .max(2, 'Muito grande!')
-    .required('UF obrigatório!'),
+      uf: Yup.string()
+      .min(2, 'Muito curto!')
+      .max(2, 'Muito grande!')
+      .required('UF obrigatório!'),
 
-    telephone: Yup.number()
-    .min(10000000000, 'Muito curto!')
-    .max(99999999999, 'Muito grande!')
-    .required('Telefone da empresa obrigatório!'),
+      telephone: Yup.number()
+      .min(10000000000, 'Muito curto!')
+      .max(99999999999, 'Muito grande!')
+      .required('Telefone da empresa obrigatório!'),
 
-    zipCode: Yup.number()
-    .min(10000000, 'Muito curto!')
-    .max(99999999, 'Muito grande!')
-    .required('CEP obrigatório!'),
+      zipCode: Yup.number()
+      .min(10000000, 'Muito curto!')
+      .max(99999999, 'Muito grande!')
+      .required('CEP obrigatório!'),
 
-    email: Yup.string()
-    .min(2, 'Muito curto!')
-    .max(200, 'Muito grande!')
-    .required('E-mail obrigatório!'),
+      email: Yup.string()
+      .min(1, 'Muito curto!')
+      .email('O e-mail deve ser válido! ')
+      .max(500, 'Muito grande!')
+      .required('E-mail obrigatório !'),
 
-    cnpj: Yup.number()
-    .min(10000000000000, 'Muito curto!')
-    .max(99999999999999, 'Muito grande!')
-    .required('CNPJ obrigatório!'),
+      cnpj: Yup.number()
+      .min(10000000000000, 'Muito curto!')
+      .max(99999999999999, 'Muito grande!')
+      .required('CNPJ obrigatório!'),
 
-    lineOfBusinesscontact: Yup.string()
-    .min(2, 'Muito curto!')
-    .max(200, 'Muito grande!')
-    .required('Linha de negócios obrigatório!'),
+      lineOfBusinesscontact: Yup.string()
+      .min(2, 'Muito curto!')
+      .max(200, 'Muito grande!')
+      .required('Linha de negócios obrigatório!'),
 
-    functions: Yup.string()
-    .min(2, 'Muito curto!')
-    .max(200, 'Muito grande!')
-    .required('Função obrigatório!'),
-
-    ProductName: Yup.string()
-    .min(2, 'Muito curto!')
-    .max(200, 'Muito grande!')
-    .required('Name do produto obrigatório!'),
-
-    price: Yup.number()
-    .min(1, 'Muito curto!')
-    .max(1000, 'Muito grande!')
-    .required('Preço do produto obrigatório!'),
+      functions: Yup.string()
+      .min(2, 'Muito curto!')
+      .max(200, 'Muito grande!')
+      .required('Função obrigatório!'),
+      price: Yup.number()
+      .min(1, 'Muito curto!')
+      .max(1000, 'Muito grande!')
+      .required('Preço do produto obrigatório!'),
   });
 
-  const formik = useFormik({//aqui fica o valor inicial do formulário com o state que veio do listar
+  const formik = useFormik({
     initialValues: {
       id: state.item._id,
       socialDenomination: state.item.socialDenomination,
@@ -89,7 +84,6 @@ function UpdateSuppliers() {
       cnpj: state.item.cnpj,
       lineOfBusinesscontact: state.item.lineOfBusinesscontact,
       functions: state.item.functions,
-      ProductName: state.item.ProductName,
       price: state.item.price
     },
     validationSchema: RegisterSchema,
@@ -102,16 +96,15 @@ function UpdateSuppliers() {
         neighborhood: values.neighborhood,
         city: values.city,
         uf: values.uf,
-        telephone: values.telephone+ "",//aqui tenho que transformar de número para string
-        zipCode: values.zipCode+ "",//aqui tenho que transformar de número para string
+        telephone: values.telephone+ "",
+        zipCode: values.zipCode+ "",
         email: values.email,
-        cnpj: values.cnpj+ "",//aqui tenho que transformar de número para string
+        cnpj: values.cnpj+ "",
         lineOfBusinesscontact: values.lineOfBusinesscontact,
         functions: values.functions,
-        ProductName: values.ProductName,
-        price: values.price+ ""//aqui tenho que transformar de número para string
+        price: values.price+ ""
       }
-      const settings = {//aqui é onde vai subir o formulário já validado para o back-end.
+      const settings = {
         method: 'put',
         headers: {
           'Content-Type': 'application/json',
@@ -123,7 +116,7 @@ function UpdateSuppliers() {
         const fetchResponse = await fetch('http://localhost:3001/suppliers/', settings);
         if (fetchResponse.status === 200) {
           formik.setFieldValue("name", null);
-          navigate('/SuppliersList', { replace: true });//aqui é onde vai redirecionar para a página de listar fornecedor, quando os dados subirem para o back end corretamente
+          navigate('/SuppliersList', { replace: true });
         }
       } catch (e) {
         console.error(e);
@@ -133,12 +126,13 @@ function UpdateSuppliers() {
 
   const { errors, touched, handleSubmit, getFieldProps } = formik;
 
-  return (//aqui fica os campos do formulário
+  return (
     <>
       <FormikProvider value={formik}>
         <Form autoComplete='off' noValidate onSubmit={handleSubmit}>
-        <Update name="Fornecedor" />{/*componente de título e texto */}
-          <div>
+        <Update name="Fornecedor" />
+        <div>
+          <label>Denominação social:</label><br/>
             <input
               type="text"
               id="socialDenomination"
@@ -149,6 +143,7 @@ function UpdateSuppliers() {
           </div>
 
           <div>
+          <label>Endereço:</label><br/>
             <input
               type="text"
               id="address"
@@ -159,6 +154,7 @@ function UpdateSuppliers() {
           </div>
 
           <div>
+          <label>Bairro:</label><br/>
             <input
               type="text"
               id="neighborhood"
@@ -169,6 +165,7 @@ function UpdateSuppliers() {
           </div>
 
           <div>
+          <label>Cidade:</label><br/>
             <input
               type="text"
               id="city"
@@ -179,6 +176,7 @@ function UpdateSuppliers() {
           </div>
 
           <div>
+          <label>UF:</label><br/>
             <input
               type="text"
               id="uf"
@@ -189,6 +187,7 @@ function UpdateSuppliers() {
           </div>
 
           <div>
+          <label>Telefone:</label><br/>
             <input
               type="number"
               id="telephone"
@@ -199,6 +198,7 @@ function UpdateSuppliers() {
           </div>
 
           <div>
+          <label>CEP:</label><br/>
             <input
               type="number"
               id="zipCode"
@@ -209,16 +209,18 @@ function UpdateSuppliers() {
           </div>
 
           <div>
+          <label>E-mail:</label><br/>
             <input
-              type="text"
+              type='email'
               id="email"
-              placeholder="Digite o E-mail da empresa"
+              placeholder="Digite o E-mail"
               {...getFieldProps('email')}
             />
             <div>{touched.email && errors.email}</div>
           </div>
 
           <div>
+          <label>CNPJ:</label><br/>
             <input
               type="number"
               id="cnpj"
@@ -229,6 +231,7 @@ function UpdateSuppliers() {
           </div>
 
           <div>
+          <label>Linha de negócios:</label><br/>
             <input
               type="text"
               id="lineOfBusinesscontact"
@@ -239,6 +242,7 @@ function UpdateSuppliers() {
           </div>
 
           <div>
+          <label>Função:</label><br/>
             <input
               type="text"
               id="functions"
@@ -247,18 +251,8 @@ function UpdateSuppliers() {
             />
             <div>{touched.functions && errors.functions}</div>
           </div>
-
           <div>
-            <input
-              type="text"
-              id="ProductName"
-              placeholder="Digite o name do produto"
-              {...getFieldProps('ProductName')}
-            />
-            <div>{touched.ProductName && errors.ProductName}</div>
-          </div>
-
-          <div>
+          <label>Preço:</label><br/>
             <input
               type="number"
               id="price"
@@ -269,7 +263,7 @@ function UpdateSuppliers() {
           </div>
           <button type='submit'  >Atualizar Fornecedor</button>
           
-          <ButtonRedirect page="SuppliersList" nameButton="Voltar"/>{/* componete de redirecionar para lista de fornecedores */}
+          <ButtonRedirect page="SuppliersList" nameButton="Voltar"/>
         </Form>
       </FormikProvider>
     </>

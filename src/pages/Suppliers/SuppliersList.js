@@ -2,16 +2,15 @@ import React from 'react';
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom';
 import ButtonRedirect from '../../components/ButtonRedirect';
-import "./style.css";
 import List from '../../components/List';
 
 function SuppliersList() {
 
-    const [itens, setItens] = useState([]);//funçao de redirecionar para a página de atualizar fornecedor passando o objeto de item
+    const [items, setItems] = useState([]);
     const navigate = useNavigate();
     const [refreshPage, setRefreshPage] = useState('');
 
-    const redirect = (item) => {//buscando fornecedor e adicionando no state itens
+    const redirect = (item) => {
         navigate('/UpdateSuppliers', { replace: false, state: { item: item } });//
     }
 
@@ -19,12 +18,12 @@ function SuppliersList() {
         async function fetchMyAPI() {
             let response = await fetch("http://localhost:3001/suppliers")
             const body = await response.json()
-            setItens(body.supplierss)
+            setItems(body.supplierss)
         }
         fetchMyAPI()
-    }, [refreshPage]);//aqui fica escutando caso a funçao deletar fornecedor seja chamada, no caso mudaria o valor.
+    }, [refreshPage]);
 
-    async function deleteSuppliers(id) {// deletando fornecedor passando o id selecionando no itns do map
+    async function deleteSuppliers(id) {
         let result = await fetch("http://localhost:3001/suppliers/" + id, {
             method: 'DELETE',
             headers: {
@@ -34,13 +33,13 @@ function SuppliersList() {
         });
         result = await result.json();
         console.warn(result);
-        setRefreshPage(result);// adicionando o resultado em refreshPage para carregar a página toda vez que for adicionado esse valo no refreshPage
+        setRefreshPage(result);
     };
 
     return (
         <div>
              <List nome="Fornecedores" />
-            <table style={{ border: "1px solid" }}>{/* Criando tabela de fornecedor */}
+            <table style={{ border: "1px solid" }}>
                 <tbody>
                     <tr>
                         <td align='center'>Denominação social</td>
@@ -54,13 +53,12 @@ function SuppliersList() {
                         <td align='center'>CNPJ</td>
                         <td align='center'>Linha de negócios</td>
                         <td align='center'>Função</td>
-                        <td align='center'>Nome do produto</td>
                         <td align='center'>Preço</td>
                         <td align='center'>Atualizar</td>
                         <td align='center'>Deletar</td>
                         
                     </tr>
-                    {itens.map(item => {//fazendo o map do array itens para lista todos os campos
+                    {items.map(item => {
 
                         return <tr key={item._id} style={{ border: "1px solid" }}>
                             <td style={{ border: "1px solid" }}>{item.socialDenomination}</td>
@@ -74,7 +72,6 @@ function SuppliersList() {
                             <td style={{ border: "1px solid" }}>{item.cnpj}</td>
                             <td style={{ border: "1px solid" }}>{item.lineOfBusinesscontact}</td>
                             <td style={{ border: "1px solid" }}>{item.functions}</td>
-                            <td style={{ border: "1px solid" }}>{item.ProductName}</td>
                             <td style={{ border: "1px solid" }}>{item.price}</td>   
                             <td style={{ border: "1px solid" }}><button onClick={() => redirect(item)}>Atualizar</button> </td>
                             <td style={{ border: "1px solid" }}><button onClick={() => deleteSuppliers(item._id)}>Deletar</button> </td>
@@ -83,8 +80,8 @@ function SuppliersList() {
                     })}
                 </tbody>
             </table>
-            <ButtonRedirect page="" nameButton="Voltar para home"/>{/* compoente de redirecionar */}
-            <ButtonRedirect page="CreateSuppliers" nameButton="Cadastrar novo Fornecedor"/>{/* compoente de redirecionar */}
+            <ButtonRedirect page="" nameButton="Voltar para home"/>
+            <ButtonRedirect page="CreateSuppliers" nameButton="Cadastrar novo Fornecedor"/>
         </div>
 
 

@@ -2,53 +2,54 @@ import { useNavigate } from 'react-router-dom';
 import { Form, FormikProvider, useFormik } from 'formik';
 import * as Yup from "yup";
 import React from 'react';
-import "./style.css";
 import ButtonRedirect from '../../components/ButtonRedirect';
 import Create from '../../components/Create';
+import {
+  MenuItem,
+  TextField,
+} from '@material-ui/core';
 
 function CreateClient() {
   const navigate = useNavigate();
 
-  const RegisterSchema = Yup.object().shape({// aqui e onde fica a validaçao do formulario.
-            
+  const RegisterSchema = Yup.object().shape({
+
     name: Yup.string()
       .min(2, 'Muito curto!')
       .max(200, 'Muito grande!')
       .required('Nome obrigatório!'),
 
-      email: Yup.string()
+    email: Yup.string()
       .min(1, 'Muito curto!')
       .email('O e-mail deve ser válido! ')
       .max(500, 'Muito grande!')
       .required('E-mail obrigatório !'),
 
-      telephone: Yup.number()
+    telephone: Yup.number()
       .min(10000000000, 'Muito curto!')
       .max(99999999999, 'Muito grande!')
       .required('Contato obrigatório!'),
 
-      address: Yup.string()
+    address: Yup.string()
       .min(2, 'Muito curto!')
       .max(200, 'Muito grande!')
       .required('Endereço obrigatório!'),
 
-      dateOfBirth: Yup.number()
+    dateOfBirth: Yup.number()
       .min(10000000, 'Muito curto!')
       .max(99999999, 'Muito grande!')
       .required('Data de nascimento obrigatório!'),
 
-      sex: Yup.string()
-      .min(2, 'Muito curto!')
-      .max(50, 'Muito grande!')
+    sex: Yup.string()
       .required('Sexo obrigatório!'),
 
-      cpf: Yup.number()
+    cpf: Yup.number()
       .min(10000000000, 'Muito curto!')
       .max(99999999999, 'Muito grande!')
       .required('CPF obrigadorio')
   });
 
-  const formik = useFormik({//aqui fica o valor inicial do formulário
+  const formik = useFormik({
     initialValues: {
       name: '',
       email: '',
@@ -58,20 +59,20 @@ function CreateClient() {
       sex: '',
       cpf: '',
     },
-    
+
     validationSchema: RegisterSchema,
 
     onSubmit: async (values) => {
       const body = {
         name: values.name,
         email: values.email,
-        telephone: values.telephone,
+        telephone: values.telephone + "",
         address: values.address,
-        dateOfBirth: values.dateOfBirth+"",
+        dateOfBirth: values.dateOfBirth + "",
         sex: values.sex,
-        cpf: values.cpf
+        cpf: values.cpf + ""
       };
-      const settings = {//aqui é onde vai subir o formulário já validado para o back-end.
+      const settings = {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -84,7 +85,7 @@ function CreateClient() {
         const fetchResponse = await fetch('http://localhost:3001/client', settings);
         if (fetchResponse.status === 201) {
           formik.setFieldValue("name", null);
-          navigate('/ClientList', { replace: true });//aqui é onde vai redirecionar para página de listar clientes, quando os dados subirem para o back end corretamente
+          navigate('/ClientList', { replace: true });
         }
       } catch (e) {
         console.error(e);
@@ -92,17 +93,17 @@ function CreateClient() {
     }
   });
 
- 
+
   const { errors, touched, handleSubmit, getFieldProps } = formik;
 
-  return (//aqui fica os campos do formulário
+  return (
     <>
       <FormikProvider value={formik}>
         <Form autoComplete='off' noValidate onSubmit={handleSubmit}>
-         <Create name="Cliente"/>{/*componente de título e texto */}
+          <Create name="Cliente" />
 
           <div>
-          <label>Nome:</label>
+            <label>Nome:</label><br />
             <input
               type="text"
               id="name"
@@ -113,7 +114,7 @@ function CreateClient() {
           </div>
 
           <div>
-          <label>Nome:</label>
+            <label>E-mail:</label><br />
             <input
               type='email'
               id="email"
@@ -124,9 +125,9 @@ function CreateClient() {
           </div>
 
           <div>
-          <label>Nome:</label>
+            <label>Telefone:</label><br />
             <input
-              type="text"
+              type="number"
               id="telephone"
               placeholder="Digite o telefone"
               {...getFieldProps('telephone')}
@@ -135,7 +136,7 @@ function CreateClient() {
           </div>
 
           <div>
-          <label>Nome:</label>
+            <label>Endereço:</label><br />
             <input
               type="text"
               id="address"
@@ -146,7 +147,7 @@ function CreateClient() {
           </div>
 
           <div>
-          <label>Nome:</label>
+            <label>Data de nascimento:</label><br />
             <input
               type="number"
               id="dateOfBirth"
@@ -155,22 +156,23 @@ function CreateClient() {
             />
             <div>{touched.dateOfBirth && errors.dateOfBirth}</div>
           </div>
+          <label>Sexo:</label><br />
+          <TextField
+            select
+            fullWidth
+            label=' Sexo'
+            {...getFieldProps('sex')}
+            error={Boolean(touched.sex && errors.sex)}
+            helperText={touched.sex && errors.sex}
+          >
+            <MenuItem value='Masculino'>Masculino</MenuItem>
+            <MenuItem value='Feminino'>Feminino</MenuItem>
+          </TextField>
 
           <div>
-          <label>Nome:</label>
+            <label>CPF:</label><br />
             <input
-              type="text"
-              id="sex"
-              placeholder="Digite a sexo"
-              {...getFieldProps('sex')}
-            />
-            <div>{touched.sex && errors.sex}</div>
-          </div>
-
-          <div>
-          <label>Nome:</label>
-            <input
-              type="text"
+              type="number"
               id="cpf"
               placeholder="Digite o CPF"
               {...getFieldProps('cpf')}
@@ -180,7 +182,7 @@ function CreateClient() {
 
           <div>{touched.category && errors.category}</div>
           <button type='submit'  >Cadastrar novo cliente</button>
-          <ButtonRedirect page="ClientList" nameButton="Voltar"/>{/* componente de redirecionar para lista de clientes */}
+          <ButtonRedirect page="ClientList" nameButton="Voltar" />
         </Form>
       </FormikProvider>
     </>

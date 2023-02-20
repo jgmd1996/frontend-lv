@@ -5,23 +5,22 @@ import ButtonRedirect from '../../components/ButtonRedirect';
 import List from '../../components/List';
 
 function OrderList() {
-
-    const [itens, setItens] = useState([]);
+    const [items, setItems] = useState([]);
     const navigate = useNavigate();
     const [refreshPage, setRefreshPage] = useState('');
 
-    const redirect = (item) => {//funçao de redirecionar para a página de atualizar pedido passando o objeto de item
-        navigate('/UpdateOrder', { replace: false, state: { item: item } });//
+    const redirect = (item) => {
+        navigate('/UpdateOrder', { replace: false, state: { item: item } });
     }
 
-    useEffect(() => {//buscando pedido e adicionando no state itens
+    useEffect(() => {
         async function fetchMyAPI() {
             let response = await fetch("http://localhost:3001/order")
             const body = await response.json()
-            setItens(body.orders)
+            setItems(body.orders)
         }
         fetchMyAPI()
-    }, [refreshPage]);//aqui fica escutando caso a funçao deletar pedido seja chamada, no caso mudaria o valor.
+    }, [refreshPage]);
 
     async function deletarCategoria(id) {
         let result = await fetch("http://localhost:3001/order/" + id, {
@@ -33,32 +32,45 @@ function OrderList() {
         });
         result = await result.json();
         console.warn(result);
-        setRefreshPage(result);// adicionando o resultado em refreshPage para carregar a página toda vez que for adicionado esse valo no refreshPage
+        setRefreshPage(result);
     
     };
 
     return (
         <div>
             <List nome="Pedidos" />
-            <table style={{ border: "1px solid" }}>{/* Criando tabela de pedidos */}
+            <table style={{ border: "1px solid" }}>
                 <tbody>
                     <tr>
-                        <td align='center'>Clientes</td>
+                        <td align='center'>Cliente</td>
+                        <td align='center'>E-mail</td>
+                        <td align='center'>Telefone</td>
+                        <td align='center'>Endereço</td>
+                        <td align='center'>Data de nascimento</td>
+                        <td align='center'>Sexo</td>
+                        <td align='center'>CPF</td>
                         <td align='center'>Produtos</td>
                         <td align='center'>Descrição</td>
-                        <td align='center'>Quantidade</td>
+                        <td align='center'>Forma de pagamento</td>
+                        <td align='center'>Forma de Entrega</td>
                         <td align='center'>Atualizar</td>
                         <td align='center'>Deletar</td>
                     </tr>
-                    {itens.map(item => {//fazendo o map do array itens para lista todos os campos
+                    {items.map(item => {
                         return <tr key={item._id} style={{ border: "1px solid" }}>
                             <td style={{ border: "1px solid" }}>{item.client.map(nomeCliente => nomeCliente.name)}</td>
-                            <td style={{ border: "1px solid" }}>{item.products.map(io => io.suppliers.map(ae => ae.ProductName))}</td>
+                            <td style={{ border: "1px solid" }}>{item.client.map(nomeCliente => nomeCliente.email)}</td>
+                            <td style={{ border: "1px solid" }}>{item.client.map(nomeCliente => nomeCliente.telephone)}</td>
+                            <td style={{ border: "1px solid" }}>{item.client.map(nomeCliente => nomeCliente.address)}</td>
+                            <td style={{ border: "1px solid" }}>{item.client.map(nomeCliente => nomeCliente.dateOfBirth)}</td>
+                            <td style={{ border: "1px solid" }}>{item.client.map(nomeCliente => nomeCliente.sex)}</td>
+                            <td style={{ border: "1px solid" }}>{item.client.map(nomeCliente => nomeCliente.cpf)}</td>
+                            <td style={{ border: "1px solid" }}>{item.products.map(io => io.name)}</td>
                             <td style={{ border: "1px solid" }}>{item.description}</td>
-                            <td style={{ border: "1px solid" }}>{item.amount}</td>
+                            <td style={{ border: "1px solid" }}>{item.paymentMethod}</td>
+                            <td style={{ border: "1px solid" }}>{item.delivery}</td>
                             <td style={{ border: "1px solid" }}><button onClick={() => redirect(item)}>Atualizar</button> </td>
                             <td style={{ border: "1px solid" }}><button onClick={() => deletarCategoria(item._id)}>Deletar</button> </td>
-
                         </tr>
                     })}
                 </tbody>
@@ -66,8 +78,6 @@ function OrderList() {
             <ButtonRedirect page="" nameButton="Voltar para home"/>
             <ButtonRedirect page="CreateOrder" nameButton="Cadastrar novo pedido"/>  
         </div>
-
-
     );
 }
 

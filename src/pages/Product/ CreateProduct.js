@@ -7,19 +7,19 @@ import * as Yup from "yup";
 import ButtonRedirect from '../../components/ButtonRedirect';
 import Create from '../../components/Create';
 
-function  CreateProduct() {
+function CreateProduct() {
 
   const animatedComponents = makeAnimated();
   const navigate = useNavigate();
 
-  // selecionar e busca a fornecedor
   const [supplier, setSupplier] = useState([]);
-  const [selectedSupplier, setSelectedSupplier] = useState({});
+  const [selectedSupplier, setSelectedSupplier] = useState([{}]);
+  console.log("selectedSupplier",selectedSupplier)
   useEffect(() => {
     async function fetchMyAPI() {
       let response = await fetch("http://localhost:3001/suppliers");
       const body = await response.json();
-      const supplierssSelect = body.supplierss.map(suppliersApi => ({ value: suppliersApi._id, label: suppliersApi.ProductName }));//trasformando o id do fornecedor em value e nome em label pra poder selecionar no formulario
+      const supplierssSelect = body.supplierss.map(suppliersApi => ({ value: suppliersApi._id, label: suppliersApi.socialDenomination }));
       setSupplier(supplierssSelect);
     }
     fetchMyAPI();
@@ -29,28 +29,33 @@ function  CreateProduct() {
     formik.setFieldValue("supplier", selectedSupplier)
   }, [selectedSupplier]);
 
-  const RegisterSchema = Yup.object().shape({// aqui e onde fica a validaçao do formulario.
-      price: Yup.number()
+  const RegisterSchema = Yup.object().shape({
+    name: Yup.string()
+      .min(2, 'Muito curto!')
+      .max(200, 'Muito grande!')
+      .required('Nome obrigatório!'),
+    price: Yup.number()
       .min(1, 'Muito curto!')
       .max(1000, 'Muito grande!')
       .required('Preço obrigatório!'),
-      description: Yup.string()
+    description: Yup.string()
       .min(2, 'Muito curto!')
       .max(200, 'Muito grande!')
       .required('Descrição obrigatório!'),
-      amount: Yup.number()
+    amount: Yup.number()
       .min(1, 'Muito curto!')
       .max(1000, 'Muito grande!')
       .required('Quantidade obrigatório!'),
-      supplier: Yup.array()
+    supplier: Yup.array()
       .nullable(true)
       .min(1, 'Muito curto!')
-      .max(1, 'No maximo um produto!')
-      .required('Produto obrigatório!')
+      .max(1, 'No maximo um Fornecedor!')
+      .required('Fornecedor obrigatório!')
   })
 
-  const formik = useFormik({//aqui fica o valor inicial do formulário
+  const formik = useFormik({
     initialValues: {
+      name: '',
       price: '',
       description: '',
       amount: '',
@@ -60,12 +65,13 @@ function  CreateProduct() {
 
     onSubmit: async (values) => {
       const body = {
-        price: values.price+"",
+        name: values.name,
+        price: values.price + "",
         description: values.description,
-        amount: values.amount+"",
-        suppliers: selectedSupplier.map(id => ({ _id: id.value }))//mando somente o id de fornecedor ao subir o formulario
+        amount: values.amount + "",
+        suppliers: selectedSupplier.map(id => id.value)
       }
-      const settings = {//aqui é onde vai subir o formulário já validado para o back-end.
+      const settings = {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -73,13 +79,16 @@ function  CreateProduct() {
         },
         body: JSON.stringify(body)
       };
+      console.log("body",body)
       try {
+        console.log("body",body)
         const fetchResponse = await fetch('http://localhost:3001/product', settings);
         if (fetchResponse.status === 201) {
           formik.setFieldValue("name", null);
-          navigate('/productList', { replace: true });//aqui é onde vai redirecionar para página de listar produto, quando os dados subirem para o back end corretamente
+          navigate('/productList', { replace: true });
         };
       } catch (e) {
+        console.log("body",body)
         console.error(e);
       };
     }
@@ -87,19 +96,64 @@ function  CreateProduct() {
 
   const { errors, touched, handleSubmit, getFieldProps } = formik;
 
-  return (//aqui fica os campos do formulário
+  return (
     <>
       <FormikProvider value={formik}>
         <Form autoComplete='off' noValidate onSubmit={handleSubmit}>
-        <Create name="Produto"/>{/*componente de título e texto */}
+          <Create name="Produto" />
+          <div>
+            <label>Nome:</label><br />
+            <input
+              type="text"
+              id="name"
+              placeholder="Digite o nome"
+              {...getFieldProps('name')}
+            />
+            <div>{touched.name && errors.name}</div>
+          </div>
 
-        <div>
-          {/*aqui seleciono os produtos que busquei do back end e trasformei em value e label */}
+          <div>
+          <label>Preço:</label><br/>
+            <input
+              type="number"
+              id="price"
+              placeholder="Digite o preço do produto"
+              {...getFieldProps('price')}
+            />
+            <div>{touched.price && errors.price}</div>
+          </div>
+
+          <div>
+          <label>Descrição:</label><br/>
+            <input
+              type="text"
+              id="description"
+              placeholder="Digite a descrição do produto"
+              {...getFieldProps('description')}
+            />
+            <div>{touched.description && errors.description}</div>
+          </div>
+
+          <div>
+          <label>Qauntidade:</label><br/>
+            <input
+              type="number"
+              id="amount"
+              placeholder="Digite a quantidade de produtos disponiveis"
+              {...getFieldProps('amount')}
+            />
+            <div>{touched.amount && errors.amount}</div>
+          </div>
+          
+          <div>
+            <label>Fornecedor:</label><br />
+            
             <Select
               components={animatedComponents}
-              placeholder="Selecione o produto"
-              isMulti
+              placeholder="Selecione o fornecedor"
               options={supplier}
+              isMulti
+              Select
               onChange={(item) => setSelectedSupplier(item)}
               className="select"
               isClearable={true}
@@ -112,45 +166,15 @@ function  CreateProduct() {
             <div>{touched.supplier && errors.supplier}</div>
           </div>
 
-          <div>
-            <input
-              type="number"
-              id="price"
-              placeholder="Digite o preço do produto"
-              {...getFieldProps('price')}
-            />
-            <div>{touched.price && errors.price}</div>
-          </div>
 
-          <div>
-            <input
-              type="text"
-              id="description"
-              placeholder="Digite a descrição do produto"
-              {...getFieldProps('description')}
-            />
-            <div>{touched.description && errors.description}</div>
-          </div>
-
-          <div>
-            <input
-              type="number"
-              id="amount"
-              placeholder="Digite a quantidade de produtos disponiveis"
-              {...getFieldProps('amount')}
-            />
-            <div>{touched.amount && errors.amount}</div>
-          </div>
-
-         
 
           <button type='submit'>Criar novo produto</button>
-          
-          <ButtonRedirect page="ProductList" nameButton="Voltar"/>{/* componente de redirecionar para lista de produtos */}
+
+          <ButtonRedirect page="ProductList" nameButton="Voltar" />
         </Form>
       </FormikProvider>
     </>
   );
 }
 
-export default  CreateProduct;
+export default CreateProduct;
