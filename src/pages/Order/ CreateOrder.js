@@ -165,7 +165,7 @@ function CreateOrder() {
             <Select
               components={animatedComponents}
               placeholder="Selecione o cliente"
-              select
+              isMulti
               options={client}
               onChange={(item) => setSelectedClient(item)}
               className="select"

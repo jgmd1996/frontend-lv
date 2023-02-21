@@ -2,24 +2,23 @@ import { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { Form, FormikProvider, useFormik } from 'formik';
 import * as Yup from "yup";
-import Select from "react-select";
-import makeAnimated from "react-select/animated";
 import ButtonRedirect from '../../components/ButtonRedirect';
 import Update from '../../components/Update';
+import {
+  MenuItem,
+  TextField,
+} from '@material-ui/core';
 
 
 function UpdateProduct() {
 
   const navigate = useNavigate();
   const { state } = useLocation();
-  const animatedComponents = makeAnimated();
-
-
   const [supplierss, setSupplierss] = useState([]);
   const stateGender = state.item.suppliers.map(suppliersh => ({ value: suppliersh._id, label: suppliersh.socialDenomination }));
-  const [selectedSuppliers, setSelectedSuppliers] = useState(stateGender);
+  console.log("stateGender",stateGender.value)
+  
 
-  // selecionar e busca a fornecedor
   useEffect(() => {
     async function fetchMyAPI() {
       let response = await fetch("http://localhost:3001/suppliers");
@@ -31,10 +30,12 @@ function UpdateProduct() {
   }, []);
 
   useEffect(() => {
-    formik.setFieldValue("suppliers", selectedSuppliers)
-  }, [selectedSuppliers]);
+    const io = state.item.suppliers.map(suppliersApi => ({ value: suppliersApi._id, label: suppliersApi.socialDenomination }));
+    console.log("io",io.map(hehe => hehe.label))
+    formik.setFieldValue("suppliers",io.map(hehe => hehe.value) )
+  }, []);
 
-
+  console.log("state", state)
   const RegisterSchema = Yup.object().shape({
     name: Yup.string()
       .min(2, 'Muito curto!')
@@ -52,12 +53,8 @@ function UpdateProduct() {
       .min(1, 'Muito curto!')
       .max(1000, 'Muito grande!')
       .required('Quantidade obrigatório!'),
-    suppliers: Yup.array()
-      .nullable(true)
-      .min(1, 'Muito curto!')
-      .max(1, 'No maximo um fornecedor!')
-      .required('fornecedor obrigatório!')
   });
+
 
   const formik = useFormik({
     initialValues: {
@@ -66,7 +63,7 @@ function UpdateProduct() {
       price: state.item.price,
       description: state.item.description,
       amount: state.item.amount,
-      suppliers: state.item.suppliers.map(suppliersApi => ({ value: suppliersApi._id, label: suppliersApi.socialDenomination }))
+     suppliers: ''
     },
     validationSchema: RegisterSchema,
 
@@ -77,7 +74,7 @@ function UpdateProduct() {
         price: values.price + "",
         description: values.description,
         amount: values.amount + "",
-        suppliers: selectedSuppliers.map(id => ({ _id: id.value }))
+        suppliers: values.suppliers
       }
       const settings = {
         method: 'put',
@@ -121,7 +118,7 @@ function UpdateProduct() {
           </div>
 
           <div>
-          <label>Preço:</label><br/>
+            <label>Preço:</label><br />
             <input
               type="number"
               id="price"
@@ -132,7 +129,7 @@ function UpdateProduct() {
           </div>
 
           <div>
-          <label>Descrição:</label><br/>
+            <label>Descrição:</label><br />
             <input
               type="text"
               id="description"
@@ -143,7 +140,7 @@ function UpdateProduct() {
           </div>
 
           <div>
-          <label>Qauntidade:</label><br/>
+            <label>Qauntidade:</label><br />
             <input
               type="number"
               id="amount"
@@ -153,25 +150,25 @@ function UpdateProduct() {
             <div>{touched.amount && errors.amount}</div>
           </div>
 
-          <div>
-            <Select
-              defaultValue={stateGender}
-              components={animatedComponents}
-              placeholder="Selecione os produtos"
-              Select
-              options={supplierss}
-              onChange={(item) => setSelectedSuppliers(item)}
-              className="select"
-              isClearable={true}
-              isSearchable={true}
-              isDisabled={false}
-              isLoading={false}
-              isRtl={false}
-              closeMenuOnSelect={false}
+          <label>Selecione o fornecedor:</label><br />
+          <TextField
+            select
+            required="Escolha ao menos um fornecedor"
+            label='fornecedor'
+            fullWidth
+            {...getFieldProps('suppliers')}
+            error={Boolean(touched.suppliers && errors.suppliers)}
+            helperText={touched.suppliers && errors.suppliers}
+          >
+            {Object.keys(supplierss).map(statusKey => {
+              const statusV = supplierss[statusKey];
+              return (
+                <MenuItem key={statusV.value} value={'' + statusV.value}>{statusV.label}</MenuItem>
+              )
+            })
+            }
 
-            />
-            <div>{touched.suppliers && errors.suppliers}</div>
-          </div>
+          </TextField>
 
 
 

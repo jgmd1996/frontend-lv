@@ -181,7 +181,7 @@ function UpdateOrder() {
               defaultValue={stateGender}
               components={animatedComponents}
               placeholder="Selecione os clientes"
-              select
+              isMulti
               options={clientss}
               onChange={(item) => setSelectedClients(item)}
               className="select"

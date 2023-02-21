@@ -1,20 +1,21 @@
 import { useNavigate } from 'react-router-dom';
 import { Form, FormikProvider, useFormik } from 'formik';
 import { useEffect, useState } from 'react'
-import Select from "react-select";
-import makeAnimated from "react-select/animated";
 import * as Yup from "yup";
 import ButtonRedirect from '../../components/ButtonRedirect';
 import Create from '../../components/Create';
+import {
+  MenuItem,
+  TextField,
+} from '@material-ui/core';
 
 function CreateProduct() {
 
-  const animatedComponents = makeAnimated();
   const navigate = useNavigate();
 
   const [supplier, setSupplier] = useState([]);
   const [selectedSupplier, setSelectedSupplier] = useState([{}]);
-  console.log("selectedSupplier",selectedSupplier)
+  console.log("selectedSupplier", selectedSupplier)
   useEffect(() => {
     async function fetchMyAPI() {
       let response = await fetch("http://localhost:3001/suppliers");
@@ -46,11 +47,6 @@ function CreateProduct() {
       .min(1, 'Muito curto!')
       .max(1000, 'Muito grande!')
       .required('Quantidade obrigatório!'),
-    supplier: Yup.array()
-      .nullable(true)
-      .min(1, 'Muito curto!')
-      .max(1, 'No maximo um Fornecedor!')
-      .required('Fornecedor obrigatório!')
   })
 
   const formik = useFormik({
@@ -69,7 +65,7 @@ function CreateProduct() {
         price: values.price + "",
         description: values.description,
         amount: values.amount + "",
-        suppliers: selectedSupplier.map(id => id.value)
+        suppliers: values.supplier
       }
       const settings = {
         method: 'POST',
@@ -79,16 +75,18 @@ function CreateProduct() {
         },
         body: JSON.stringify(body)
       };
-      console.log("body",body)
+      console.log("body", body)
       try {
-        console.log("body",body)
+        console.log("body", body)
         const fetchResponse = await fetch('http://localhost:3001/product', settings);
         if (fetchResponse.status === 201) {
           formik.setFieldValue("name", null);
           navigate('/productList', { replace: true });
+        }else{
+          alert("Selecione ao menos um Fornecedor!")
         };
       } catch (e) {
-        console.log("body",body)
+        console.log("body", body)
         console.error(e);
       };
     }
@@ -97,11 +95,13 @@ function CreateProduct() {
   const { errors, touched, handleSubmit, getFieldProps } = formik;
 
   return (
+   
     <>
       <FormikProvider value={formik}>
         <Form autoComplete='off' noValidate onSubmit={handleSubmit}>
           <Create name="Produto" />
           <div>
+      
             <label>Nome:</label><br />
             <input
               type="text"
@@ -113,7 +113,7 @@ function CreateProduct() {
           </div>
 
           <div>
-          <label>Preço:</label><br/>
+            <label>Preço:</label><br />
             <input
               type="number"
               id="price"
@@ -124,7 +124,7 @@ function CreateProduct() {
           </div>
 
           <div>
-          <label>Descrição:</label><br/>
+            <label>Descrição:</label><br />
             <input
               type="text"
               id="description"
@@ -135,7 +135,7 @@ function CreateProduct() {
           </div>
 
           <div>
-          <label>Qauntidade:</label><br/>
+            <label>Qauntidade:</label><br />
             <input
               type="number"
               id="amount"
@@ -144,29 +144,27 @@ function CreateProduct() {
             />
             <div>{touched.amount && errors.amount}</div>
           </div>
+
+          <br /><br /><br />
+          <label>Selecione o fornecedor:</label><br />
+          <TextField
           
-          <div>
-            <label>Fornecedor:</label><br />
-            
-            <Select
-              components={animatedComponents}
-              placeholder="Selecione o fornecedor"
-              options={supplier}
-              isMulti
-              Select
-              onChange={(item) => setSelectedSupplier(item)}
-              className="select"
-              isClearable={true}
-              isSearchable={true}
-              isDisabled={false}
-              isLoading={false}
-              isRtl={false}
-              closeMenuOnSelect={false}
-            />
-            <div>{touched.supplier && errors.supplier}</div>
-          </div>
-
-
+            select
+            label='fornecedor'
+            fullWidth
+            {...getFieldProps('supplier')}
+            error={Boolean(touched.supplier && errors.supplier)}
+            helperText={touched.supplier && errors.supplier}
+          >
+            {Object.keys(supplier).map(statusKey => {
+              const statusV = supplier[statusKey];
+              return (
+                <MenuItem key={statusV.value} value={'' + statusV.value}>{statusV.label}</MenuItem>
+                
+              )
+            })
+            }
+          </TextField>
 
           <button type='submit'>Criar novo produto</button>
 

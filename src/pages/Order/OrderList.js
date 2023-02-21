@@ -33,7 +33,6 @@ function OrderList() {
         result = await result.json();
         console.warn(result);
         setRefreshPage(result);
-    
     };
 
     return (
