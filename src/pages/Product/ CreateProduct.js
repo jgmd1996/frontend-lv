@@ -31,23 +31,6 @@ function CreateProduct() {
   useEffect(() => {
     formik.setFieldValue("supplier", selectedSupplier)
   }, [selectedSupplier]);
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
   
   const RegisterSchema = Yup.object().shape({
     name: Yup.string()
