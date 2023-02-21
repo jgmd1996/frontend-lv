@@ -15,8 +15,8 @@ function UpdateProduct() {
   const navigate = useNavigate();
   const { state } = useLocation();
   const [supplierss, setSupplierss] = useState([]);
-  const stateGender = state.item.suppliers.map(suppliersh => ({ value: suppliersh._id, label: suppliersh.socialDenomination }));
-  console.log("stateGender",stateGender.value)
+  //const stateGender = state.item.suppliers.map(suppliersh => ({ value: suppliersh._id, label: suppliersh.socialDenomination }));
+  //console.log("stateGender",stateGender)
   
 
   useEffect(() => {
@@ -29,11 +29,11 @@ function UpdateProduct() {
     fetchMyAPI();
   }, []);
 
-  useEffect(() => {
-    const io = state.item.suppliers.map(suppliersApi => ({ value: suppliersApi._id, label: suppliersApi.socialDenomination }));
-    console.log("io",io.map(hehe => hehe.label))
-    formik.setFieldValue("suppliers",io.map(hehe => hehe.value) )
-  }, []);
+  // useEffect(() => {
+  //   const io = state.item.suppliers.map(suppliersApi => ({ value: suppliersApi._id, label: suppliersApi.socialDenomination }));
+  //   console.log("io",io.map(hehe => hehe.label))
+  //   formik.setFieldValue("suppliers",io.map(hehe => hehe.value) )
+  // }, []);
 
   console.log("state", state)
   const RegisterSchema = Yup.object().shape({
@@ -63,7 +63,7 @@ function UpdateProduct() {
       price: state.item.price,
       description: state.item.description,
       amount: state.item.amount,
-     suppliers: ''
+      suppliers: state.item.suppliers._id
     },
     validationSchema: RegisterSchema,
 

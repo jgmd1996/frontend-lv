@@ -49,6 +49,7 @@ function OrderList() {
                         <td align='center'>Sexo</td>
                         <td align='center'>CPF</td>
                         <td align='center'>Produtos</td>
+                        <td align='center'>Quantidade de produtos pedidos</td>
                         <td align='center'>Descrição</td>
                         <td align='center'>Forma de pagamento</td>
                         <td align='center'>Forma de Entrega</td>
@@ -57,14 +58,15 @@ function OrderList() {
                     </tr>
                     {items.map(item => {
                         return <tr key={item._id} style={{ border: "1px solid" }}>
-                            <td style={{ border: "1px solid" }}>{item.client.map(nomeCliente => nomeCliente.name)}</td>
-                            <td style={{ border: "1px solid" }}>{item.client.map(nomeCliente => nomeCliente.email)}</td>
-                            <td style={{ border: "1px solid" }}>{item.client.map(nomeCliente => nomeCliente.telephone)}</td>
-                            <td style={{ border: "1px solid" }}>{item.client.map(nomeCliente => nomeCliente.address)}</td>
-                            <td style={{ border: "1px solid" }}>{item.client.map(nomeCliente => nomeCliente.dateOfBirth)}</td>
-                            <td style={{ border: "1px solid" }}>{item.client.map(nomeCliente => nomeCliente.sex)}</td>
-                            <td style={{ border: "1px solid" }}>{item.client.map(nomeCliente => nomeCliente.cpf)}</td>
+                            <td style={{ border: "1px solid" }}>{item.client.name}</td>
+                            <td style={{ border: "1px solid" }}>{item.client.email}</td>
+                            <td style={{ border: "1px solid" }}>{item.client.telephone}</td>
+                            <td style={{ border: "1px solid" }}>{item.client.address}</td>
+                            <td style={{ border: "1px solid" }}>{item.client.dateOfBirth}</td>
+                            <td style={{ border: "1px solid" }}>{item.client.sex}</td>
+                            <td style={{ border: "1px solid" }}>{item.client.cpf}</td>
                             <td style={{ border: "1px solid" }}>{item.products.map(io => io.name)}</td>
+                            <td style={{ border: "1px solid" }}>{item.products.length}</td>
                             <td style={{ border: "1px solid" }}>{item.description}</td>
                             <td style={{ border: "1px solid" }}>{item.paymentMethod}</td>
                             <td style={{ border: "1px solid" }}>{item.delivery}</td>

@@ -16,10 +16,7 @@ function UpdateOrder() {
   const navigate = useNavigate();
   const { state } = useLocation();
   const animatedComponents = makeAnimated();
-
   const [clientss, setClientss] = useState([]);
-  const stateGender = state.item.client.map(clientsh => ({ value: clientsh._id, label: clientsh.name }));
-  const [selectedClients, setSelectedClients] = useState(stateGender);
 
   useEffect(() => {
     async function fetchMyAPI() {
@@ -30,10 +27,6 @@ function UpdateOrder() {
     }
     fetchMyAPI();
   }, []);
-
-  useEffect(() => {
-    formik.setFieldValue("client", selectedClients)
-  }, [selectedClients]);
 
   const [productss, setProductss] = useState([]);
   const stateProduct = state.item.products.map(productsh => ({ value: productsh._id, label: productsh.name }));
@@ -67,12 +60,7 @@ function UpdateOrder() {
     products: Yup.array()
       .nullable(true)
       .min(1, 'Muito curto!')
-      .required('Produto obrigatório!'),
-    client: Yup.array()
-      .nullable(true)
-      .min(1, 'Muito curto!')
-      .max(1, 'No maximo um produto!')
-      .required('Cliente obrigatório!')
+      .required('Produto obrigatório!')
   });
 
   const formik = useFormik({
@@ -81,7 +69,7 @@ function UpdateOrder() {
       description: state.item.description,
       paymentMethod: state.item.paymentMethod,
       delivery: state.item.delivery,
-      client: state.item.client.map(clientsApi => ({ value: clientsApi._id, label: clientsApi.name })),
+      client: state.item.client._id,
       products: state.item.products
     },
     validationSchema: RegisterSchema,
@@ -93,7 +81,7 @@ function UpdateOrder() {
         description: values.description,
         paymentMethod: values.paymentMethod,
         delivery: values.delivery,
-        client: selectedClients.map(id => ({ _id: id.value })),
+        client: values.client,
         products: selectedProducts.map(id => ({ _id: id.value }))
       }
       const settings = {
@@ -118,7 +106,6 @@ function UpdateOrder() {
     }
 
   });
-
 
   const { errors, touched, handleSubmit, getFieldProps } = formik;
 
@@ -174,28 +161,27 @@ function UpdateOrder() {
             <MenuItem value='Expresso'>Expresso</MenuItem>
             <MenuItem value='Padrão'>Padrão</MenuItem>
           </TextField>
+          <br /><br /><br />
+          <label>Selecione o cliente:</label><br />
+          <TextField
+            select
+            required="Escolha ao menos um cliente"
+            label='Cliente'
+            fullWidth
+            {...getFieldProps('client')}
+            error={Boolean(touched.client && errors.client)}
+            helperText={touched.client && errors.client}
+          >
+            {Object.keys(clientss).map(statusKey => {
+              const statusV = clientss[statusKey];
+              return (
+                <MenuItem key={statusV.value} value={'' + statusV.value}>{statusV.label}</MenuItem>
+              )
+            })
+            }
 
-          <div>
-            <label>Selecione o cliente:</label><br />
-            <Select
-              defaultValue={stateGender}
-              components={animatedComponents}
-              placeholder="Selecione os clientes"
-              isMulti
-              options={clientss}
-              onChange={(item) => setSelectedClients(item)}
-              className="select"
-              isClearable={true}
-              isSearchable={true}
-              isDisabled={false}
-              isLoading={false}
-              isRtl={false}
-              closeMenuOnSelect={false}
-
-            />
-            <div>{touched.client && errors.client}</div>
-          </div>
-
+          </TextField>
+          <br /><br /><br />
           <div>
             <label>Descrição do produto:</label><br />
             <input

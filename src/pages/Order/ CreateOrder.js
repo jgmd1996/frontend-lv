@@ -32,8 +32,8 @@ function CreateOrder() {
     formik.setFieldValue("product", selectedProduct)
   }, [selectedProduct]);
 
-  const [client, setClient] = useState([]);
-  const [selectedClient, setSelectedClient] = useState({});
+  const [clients, setClient] = useState([]);
+  const [selectedClient, setSelectedClient] = useState([{}]);
   useEffect(() => {
     async function fetchMyAPI() {
       let response = await fetch("http://localhost:3001/client");
@@ -60,12 +60,7 @@ function CreateOrder() {
     product: Yup.array()
       .nullable(true)
       .min(1, 'Muito curto!')
-      .required('Produto obrigatório!'),
-    client: Yup.array()
-      .nullable(true)
-      .min(1, 'Muito curto!')
-      .max(1, 'No maximo um produto!')
-      .required('Cliente obrigatório!')
+      .required('Produto obrigatório!')
   })
 
   const formik = useFormik({
@@ -84,7 +79,7 @@ function CreateOrder() {
         paymentMethod: values.paymentMethod,
         delivery: values.delivery,
         products: selectedProduct.map(id => ({ _id: id.value })),
-        client: selectedClient.map(id => ({ _id: id.value }))
+        client: values.client
       }
       const settings = {
         method: 'POST',
@@ -99,6 +94,8 @@ function CreateOrder() {
         if (fetchResponse.status === 201) {
           formik.setFieldValue("name", null);
           navigate('/OrderList', { replace: true });
+        }else{
+          alert("Selecione ao menos um cliente!")
         };
       } catch (e) {
         console.error(e);
@@ -132,7 +129,7 @@ function CreateOrder() {
             />
             <div>{touched.product && errors.product}</div>
           </div>
-
+          <br /><br /><br />
           <label>Forma de pagamento:</label><br />
           <TextField
             select
@@ -146,7 +143,7 @@ function CreateOrder() {
             <MenuItem value='Cartão'>Cartão</MenuItem>
             <MenuItem value='Pix'>pix</MenuItem>
           </TextField>
-          
+          <br /><br /><br />
           <label>Forma de Entrega:</label><br />
           <TextField
             select
@@ -159,26 +156,27 @@ function CreateOrder() {
             <MenuItem value='Expresso'>Expresso</MenuItem>
             <MenuItem value='Padrão'>Padrão</MenuItem>
           </TextField>
-
-          <div>
-            <label>Selecione o cliente:</label><br />
-            <Select
-              components={animatedComponents}
-              placeholder="Selecione o cliente"
-              isMulti
-              options={client}
-              onChange={(item) => setSelectedClient(item)}
-              className="select"
-              isClearable={true}
-              isSearchable={true}
-              isDisabled={false}
-              isLoading={false}
-              isRtl={false}
-              closeMenuOnSelect={false}
-            />
-            <div>{touched.client && errors.client}</div>
-          </div>
-
+            <br /><br /><br />
+          <label>Selecione o cliente:</label><br />
+          <TextField
+          
+            select
+            label='cliente'
+            fullWidth
+            {...getFieldProps('client')}
+            error={Boolean(touched.client && errors.client)}
+            helperText={touched.client && errors.client}
+          >
+            {Object.keys(clients).map(statusKey => {
+              const statusV = clients[statusKey];
+              return (
+                <MenuItem key={statusV.value} value={'' + statusV.value}>{statusV.label}</MenuItem>
+                
+              )
+            })
+            }
+          </TextField>
+          <br /><br /><br />
           <div>
             <label>Descrição do produto:</label><br />
             <input
@@ -189,7 +187,7 @@ function CreateOrder() {
             />
             <div>{touched.description && errors.description}</div>
           </div>
-
+          <br /><br /><br />
           <button type='submit'>Criar novo pedido</button>
           <ButtonRedirect page="OrderList" nameButton="Voltar" />
         </Form>

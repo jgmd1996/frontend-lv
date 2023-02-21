@@ -23,6 +23,18 @@ function ProductList() {
         fetchMyAPI()
     }, [refreshPage]);
 
+
+    const [order, setOrder]= useState()
+    useEffect(() => {
+        async function fetchMyAPI() {
+            let response = await fetch("http://localhost:3001/order");
+            const body = await response.json();
+            setOrder(body.orders);
+        }
+        fetchMyAPI()
+    }, [refreshPage]);
+
+
     async function deleteProduct(id) {
         let result = await fetch("http://localhost:3001/product/" + id, {
             method: 'DELETE',
@@ -49,6 +61,7 @@ function ProductList() {
                         <td align='center'>Descrição</td>
                         <td align='center'>Quantidade</td>
                         <td align='center'>Fornecedor</td>
+                        {/* <td align='center'>pedidos Realizados</td> */}
                         <td align='center'>Atualizar</td>
                         <td align='center'>Deletar</td>
                     </tr>
@@ -59,7 +72,8 @@ function ProductList() {
                             <td style={{ border: "1px solid" }}>{item.price}</td>
                             <td style={{ border: "1px solid" }}>{item.description}</td>
                             <td style={{ border: "1px solid" }}>{item.amount}</td>
-                            <td style={{ border: "1px solid" }}>{item.suppliers.map(io => io.socialDenomination)}</td>
+                            <td style={{ border: "1px solid" }}>{item.suppliers.socialDenomination}</td>
+                            {/* <td style={{ border: "1px solid" }}>{item.name == order.map(io => io.name).length}</td> */}
                             <td style={{ border: "1px solid" }}><button onClick={() => redirect(item)}>Atualizar</button> </td>
                             <td style={{ border: "1px solid" }}><button onClick={() => deleteProduct(item._id)}>Deletar</button> </td>
                         </tr>

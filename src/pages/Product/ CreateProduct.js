@@ -13,9 +13,11 @@ function CreateProduct() {
 
   const navigate = useNavigate();
 
-  const [supplier, setSupplier] = useState([]);
+
+
+  const [suppliers, setSupplier] = useState([]);
   const [selectedSupplier, setSelectedSupplier] = useState([{}]);
-  console.log("selectedSupplier", selectedSupplier)
+  console.log("supplier", suppliers)
   useEffect(() => {
     async function fetchMyAPI() {
       let response = await fetch("http://localhost:3001/suppliers");
@@ -30,6 +32,23 @@ function CreateProduct() {
     formik.setFieldValue("supplier", selectedSupplier)
   }, [selectedSupplier]);
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
   const RegisterSchema = Yup.object().shape({
     name: Yup.string()
       .min(2, 'Muito curto!')
@@ -48,7 +67,7 @@ function CreateProduct() {
       .max(1000, 'Muito grande!')
       .required('Quantidade obrigatório!'),
   })
-
+  console.log(suppliers)
   const formik = useFormik({
     initialValues: {
       name: '',
@@ -91,7 +110,7 @@ function CreateProduct() {
       };
     }
   });
-
+console.log("formik",formik)
   const { errors, touched, handleSubmit, getFieldProps } = formik;
 
   return (
@@ -156,8 +175,8 @@ function CreateProduct() {
             error={Boolean(touched.supplier && errors.supplier)}
             helperText={touched.supplier && errors.supplier}
           >
-            {Object.keys(supplier).map(statusKey => {
-              const statusV = supplier[statusKey];
+            {Object.keys(suppliers).map(statusKey => {
+              const statusV = suppliers[statusKey];
               return (
                 <MenuItem key={statusV.value} value={'' + statusV.value}>{statusV.label}</MenuItem>
                 
