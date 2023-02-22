@@ -13,7 +13,6 @@ function CreateClient() {
   const navigate = useNavigate();
 
   const RegisterSchema = Yup.object().shape({
-
     name: Yup.string()
       .min(2, 'Muito curto!')
       .max(200, 'Muito grande!')
@@ -59,9 +58,7 @@ function CreateClient() {
       sex: '',
       cpf: '',
     },
-
     validationSchema: RegisterSchema,
-
     onSubmit: async (values) => {
       const body = {
         name: values.name,
@@ -81,7 +78,6 @@ function CreateClient() {
         body: JSON.stringify(body)
       };
       try {
-
         const fetchResponse = await fetch('http://localhost:3001/client', settings);
         if (fetchResponse.status === 201) {
           formik.setFieldValue("name", null);
@@ -92,7 +88,6 @@ function CreateClient() {
       }
     }
   });
-
 
   const { errors, touched, handleSubmit, getFieldProps } = formik;
 

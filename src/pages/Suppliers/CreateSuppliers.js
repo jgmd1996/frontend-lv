@@ -83,8 +83,7 @@ function CreateSuppliers() {
       cnpj: '',
       lineOfBusinesscontact: '',
       functions: '',
-      price: '',
-      
+      price: '', 
     },
 
     validationSchema: RegisterSchema,
@@ -102,8 +101,7 @@ function CreateSuppliers() {
         cnpj: values.cnpj + "",
         lineOfBusinesscontact: values.lineOfBusinesscontact,
         functions: values.functions,
-        price: values.price + "",
-        
+        price: values.price + "", 
       };
       const settings = {
         method: 'POST',
@@ -112,7 +110,6 @@ function CreateSuppliers() {
           'Accept': 'application/json',
         },
         body: JSON.stringify(body)
-
       };
 
       try {
@@ -200,7 +197,7 @@ function CreateSuppliers() {
             />
             <div>{touched.telephone && errors.telephone}</div>
           </div>
-
+          
           <div>
           <label>CEP:</label><br/>
             <input

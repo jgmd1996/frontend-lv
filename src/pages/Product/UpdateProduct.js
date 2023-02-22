@@ -15,9 +15,6 @@ function UpdateProduct() {
   const navigate = useNavigate();
   const { state } = useLocation();
   const [supplierss, setSupplierss] = useState([]);
-  //const stateGender = state.item.suppliers.map(suppliersh => ({ value: suppliersh._id, label: suppliersh.socialDenomination }));
-  //console.log("stateGender",stateGender)
-  
 
   useEffect(() => {
     async function fetchMyAPI() {
@@ -29,13 +26,6 @@ function UpdateProduct() {
     fetchMyAPI();
   }, []);
 
-  // useEffect(() => {
-  //   const io = state.item.suppliers.map(suppliersApi => ({ value: suppliersApi._id, label: suppliersApi.socialDenomination }));
-  //   console.log("io",io.map(hehe => hehe.label))
-  //   formik.setFieldValue("suppliers",io.map(hehe => hehe.value) )
-  // }, []);
-
-  console.log("state", state)
   const RegisterSchema = Yup.object().shape({
     name: Yup.string()
       .min(2, 'Muito curto!')
@@ -140,7 +130,7 @@ function UpdateProduct() {
           </div>
 
           <div>
-            <label>Qauntidade:</label><br />
+            <label>Quantidade:</label><br />
             <input
               type="number"
               id="amount"
@@ -148,13 +138,12 @@ function UpdateProduct() {
               {...getFieldProps('amount')}
             />
             <div>{touched.amount && errors.amount}</div>
-          </div>
-
-          <label>Selecione o fornecedor:</label><br />
+          </div><br />
+          
+          <label>Selecione o fornecedor:</label>
           <TextField
             select
             required="Escolha ao menos um fornecedor"
-            label='fornecedor'
             fullWidth
             {...getFieldProps('suppliers')}
             error={Boolean(touched.suppliers && errors.suppliers)}
@@ -169,9 +158,6 @@ function UpdateProduct() {
             }
 
           </TextField>
-
-
-
           <button type='submit'>Atualizar produto</button>
 
           <ButtonRedirect page="ProductList" nameButton="Voltar" />

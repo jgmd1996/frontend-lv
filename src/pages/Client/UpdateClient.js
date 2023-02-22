@@ -9,7 +9,6 @@ import {
 } from '@material-ui/core';
 
 function UpdateClient() {
-
   const navigate = useNavigate();
   const { state } = useLocation();
 
@@ -184,5 +183,4 @@ function UpdateClient() {
     </>
   );
 }
-
 export default UpdateClient;

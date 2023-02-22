@@ -46,8 +46,6 @@ function UpdateOrder() {
     formik.setFieldValue("products", selectedProducts)
   }, [selectedProducts]);
 
-  console.log("status", state)
-
   const RegisterSchema = Yup.object().shape({
     description: Yup.string()
       .min(2, 'Descrição muito curto!')
@@ -104,7 +102,6 @@ function UpdateOrder() {
         console.error(e);
       }
     }
-
   });
 
   const { errors, touched, handleSubmit, getFieldProps } = formik;
@@ -161,7 +158,7 @@ function UpdateOrder() {
             <MenuItem value='Expresso'>Expresso</MenuItem>
             <MenuItem value='Padrão'>Padrão</MenuItem>
           </TextField>
-          <br /><br /><br />
+          <br />
           <label>Selecione o cliente:</label><br />
           <TextField
             select
@@ -181,7 +178,7 @@ function UpdateOrder() {
             }
 
           </TextField>
-          <br /><br /><br />
+          <br />
           <div>
             <label>Descrição do produto:</label><br />
             <input

@@ -12,12 +12,8 @@ import {
 function CreateProduct() {
 
   const navigate = useNavigate();
-
-
-
   const [suppliers, setSupplier] = useState([]);
   const [selectedSupplier, setSelectedSupplier] = useState([{}]);
-  console.log("supplier", suppliers)
   useEffect(() => {
     async function fetchMyAPI() {
       let response = await fetch("http://localhost:3001/suppliers");
@@ -50,7 +46,6 @@ function CreateProduct() {
       .max(1000, 'Muito grande!')
       .required('Quantidade obrigatório!'),
   })
-  console.log(suppliers)
   const formik = useFormik({
     initialValues: {
       name: '',
@@ -77,9 +72,7 @@ function CreateProduct() {
         },
         body: JSON.stringify(body)
       };
-      console.log("body", body)
       try {
-        console.log("body", body)
         const fetchResponse = await fetch('http://localhost:3001/product', settings);
         if (fetchResponse.status === 201) {
           formik.setFieldValue("name", null);
@@ -88,16 +81,12 @@ function CreateProduct() {
           alert("Selecione ao menos um Fornecedor!")
         };
       } catch (e) {
-        console.log("body", body)
         console.error(e);
       };
     }
   });
-console.log("formik",formik)
   const { errors, touched, handleSubmit, getFieldProps } = formik;
-
   return (
-   
     <>
       <FormikProvider value={formik}>
         <Form autoComplete='off' noValidate onSubmit={handleSubmit}>
@@ -147,10 +136,9 @@ console.log("formik",formik)
             <div>{touched.amount && errors.amount}</div>
           </div>
 
-          <br /><br /><br />
+          <br />
           <label>Selecione o fornecedor:</label><br />
           <TextField
-          
             select
             label='fornecedor'
             fullWidth
@@ -169,7 +157,6 @@ console.log("formik",formik)
           </TextField>
 
           <button type='submit'>Criar novo produto</button>
-
           <ButtonRedirect page="ProductList" nameButton="Voltar" />
         </Form>
       </FormikProvider>

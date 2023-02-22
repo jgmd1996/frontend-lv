@@ -12,12 +12,11 @@ import {
 } from '@material-ui/core';
 
 function CreateOrder() {
-
   const animatedComponents = makeAnimated();
   const navigate = useNavigate();
-
   const [product, setProduct] = useState([]);
   const [selectedProduct, setSelectedProduct] = useState({});
+
   useEffect(() => {
     async function fetchMyAPI() {
       let response = await fetch("http://localhost:3001/product");
@@ -96,8 +95,10 @@ function CreateOrder() {
           navigate('/OrderList', { replace: true });
         }else{
           alert("Selecione ao menos um cliente!")
+          console.log("body",body)
         };
       } catch (e) {
+        console.log(body)
         console.error(e);
       };
     }
@@ -129,7 +130,7 @@ function CreateOrder() {
             />
             <div>{touched.product && errors.product}</div>
           </div>
-          <br /><br /><br />
+          <br />
           <label>Forma de pagamento:</label><br />
           <TextField
             select
@@ -143,7 +144,7 @@ function CreateOrder() {
             <MenuItem value='Cartão'>Cartão</MenuItem>
             <MenuItem value='Pix'>pix</MenuItem>
           </TextField>
-          <br /><br /><br />
+          <br />
           <label>Forma de Entrega:</label><br />
           <TextField
             select
@@ -156,7 +157,7 @@ function CreateOrder() {
             <MenuItem value='Expresso'>Expresso</MenuItem>
             <MenuItem value='Padrão'>Padrão</MenuItem>
           </TextField>
-            <br /><br /><br />
+            <br />
           <label>Selecione o cliente:</label><br />
           <TextField
           
@@ -171,12 +172,11 @@ function CreateOrder() {
               const statusV = clients[statusKey];
               return (
                 <MenuItem key={statusV.value} value={'' + statusV.value}>{statusV.label}</MenuItem>
-                
               )
             })
             }
           </TextField>
-          <br /><br /><br />
+          <br />
           <div>
             <label>Descrição do produto:</label><br />
             <input
@@ -187,7 +187,7 @@ function CreateOrder() {
             />
             <div>{touched.description && errors.description}</div>
           </div>
-          <br /><br /><br />
+          <br />
           <button type='submit'>Criar novo pedido</button>
           <ButtonRedirect page="OrderList" nameButton="Voltar" />
         </Form>
@@ -195,5 +195,4 @@ function CreateOrder() {
     </>
   );
 }
-
 export default CreateOrder;
