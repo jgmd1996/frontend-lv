@@ -95,10 +95,8 @@ function CreateOrder() {
           navigate('/OrderList', { replace: true });
         }else{
           alert("Selecione ao menos um cliente!")
-          console.log("body",body)
         };
       } catch (e) {
-        console.log(body)
         console.error(e);
       };
     }
